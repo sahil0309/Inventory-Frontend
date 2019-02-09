@@ -1,0 +1,50 @@
+<div class="container">
+
+  <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top" *ngIf="isLoggedIn$ | async as isLoggedIn">
+
+    <a class="navbar-brand" href="#">App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+
+        <li class="nav-item" *ngIf="displayMenu();">
+          <a class="nav-link" routerLink="admin-dashboard">Admin dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="sales-dashboard">Sales dashboard</a>
+        </li>
+
+        <li class="nav-item dropdown" *ngIf="displayMenu();">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" data-target="#navbarDropdown" aria-controls="navbarDropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle navigation">
+            Masters
+          </a>
+          <div id="navbarDropdown" class="dropdown-menu" role="menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="category">Category</a>
+            <a class="dropdown-item" routerLink="material">Material</a>
+            <a class="dropdown-item" routerLink="user-list">User</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" data-target="#profileDropdown" aria-controls="navbarDropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle navigation">
+            <!-- {{userInfo.display_name}} -->
+            {{getUserName()}}
+          </a>
+          <div id="profileDropdown" class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="profileDropdown">
+            <a class="dropdown-item" (click)="navigateToUserProfile()">Profile</a>
+            <a class="dropdown-item" routerLink="change-password">Change Password</a>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+</div>
+
+<!-- Navbar -->

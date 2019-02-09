@@ -1,0 +1,116 @@
+<div class="container">
+
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8">
+      <br/>
+      <h5>User Profile</h5>
+      <br/>
+      <mat-card>
+        <form [formGroup]="userForm" (ngSubmit)="saveUserProfile()">
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="user_code" placeholder="User code">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="first_name" placeholder="First name" (keypress)="aplphabetsOnly($event)" (blur)="aplphabetsOnly($event)">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="last_name" placeholder="Last name">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="user_name" placeholder="User name">
+                  <mat-hint class="text-primary">This will be considered as username to login to the system</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="password" type="password" placeholder="Password">
+                  <mat-hint class="text-warning">Note: Password must include  - at least 8 characters, Lowercase letter, Uppercase letter, Number, Special character</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="mobile_number" placeholder="Mobile number">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="alternate_contact_numbers" placeholder="Alternate contact number">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="email_id" placeholder="Email id">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="alternate_email_id" placeholder="Alternate email id">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <mat-select placeholder="Role" formControlName="role_id">
+                    <mat-option *ngFor="let item of list_role" [value]="item.role_id">
+                      {{item.role_name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <br/>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <!-- <button type="button" mat-raised-button class="btn btn-block col-sm-2 mr-3" (click)="ngOnInit()">RESET</button> -->
+                <button type="button" mat-raised-button class="btn btn-block col-sm-2 mr-3" (click)="findInvalidControls()">RESET</button>
+                <button type="submit" mat-raised-button class="btn btn-block col-sm-2" color="primary" [disabled]="userForm.invalid">SAVE</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+            <div class="row">
+              <div class="col-sm-8"></div>
+              <button type="button" class="btn btn-sm col-sm-2 btn-block" (click)="closeModal(userTemplate)">Close</button>
+              <button type="submit" class="btn btn-sm btn-primary col-sm-2 btn-block" [disabled]="!userForm.valid" (click)="saveUser()">Save</button>
+            </div>
+          </div> -->
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

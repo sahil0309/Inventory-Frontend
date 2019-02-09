@@ -1,0 +1,13 @@
+.card-body-roadlist {
+  min-height: 75vh;
+  max-height: 75vh;
+}
+
+/* #newt > table > tbody > tr > td {
+  font-size: 12px;
+  font-weight: bold;
+  padding: .3rem;
+  color: red;
+  vertical-align: top;
+  border-top: 1px solid #efe7f7;
+} */

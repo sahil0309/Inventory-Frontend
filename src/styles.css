@@ -1,0 +1,427 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import 'node_modules/ngx-toastr/toastr.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+/* * {
+  font-family: 'Montserrat', sans-serif !important;
+} */
+
+html {
+  /* background-color: #efefef !important; */
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, span, .btn {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+body {
+  font-size: 12.5px !important;
+  /* padding-top: calc(100% - 94%); */
+  padding-top: 57px;
+  background-color: #efefef !important;
+  /* background-color: #f1f4fa !important; */
+  /* background-color: #e1e7f3 !important; */
+}
+
+.clickable {
+  cursor: pointer !important;
+}
+
+.navbar-nav > li > a {
+  cursor: pointer;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+   z-index: 99999 !important;
+}
+
+.mat-form-field {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.example-form {
+  /* min-width: 150px;
+  max-width: 500px; */
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-mini-fab-white {
+  background-color: #ffffff !important;
+  color: darkgrey !important;
+}
+
+/* .btn {
+    border: none;
+    box-shadow: 1px 2px 15px 0 hsla(0,0%,74%,.5);
+} */
+
+/* Dialog CSS */
+.mat-dialog-title{
+  font-size: 18px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.mat-dialog-content {
+  display: block;
+  font-size: 12px !important;
+  margin: 0 -24px;
+  padding: 0 24px;
+  max-height: 65vh;
+  min-height: 65vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Dialog CSS */
+
+.btn-primary {
+    color: #fff;
+    background-color: #2a6698;
+    border-color: #2a6698;
+}
+
+.btn-primary:hover{
+    color: #fff;
+    background-color: #204d74 !important;
+    border-color: #204d74 !important;
+}
+
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #83b3dc;
+    border-color: #83b3dc;
+}
+
+#submitButton {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+}
+
+#flowSubmitButton{
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+}
+
+code {
+  color: crimson;
+  background-color: #f1f1f1;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 110%;
+}
+
+/* File upload box CSS */
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 2px dotted #ccc !important;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+/* File upload box CSS */
+
+
+table > .thead-light > tr > th {
+  background-color: #dccaed !important;
+  color: #351a4f !important;
+  border-bottom: none;
+}
+
+.table-master-card > .table-responsive >  table > thead > tr > th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.table-master-card > .table-responsive >  table > thead > tr > th:last-child {
+  border-top-right-radius: 5px;
+}
+
+.table-master-card > .table-responsive >  table > thead > tr > th {
+  background-color: #dccaed !important;
+  color: #351a4f !important;
+  border-bottom: none;
+  padding: 5px;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+}
+
+/* .table-contact-details{
+  min-height: 40vh;
+  max-height: 40vh;
+  overflow-y: scroll;
+} */
+
+/* table > tbody > tr:first-child{
+  border-top: none;
+} */
+
+/* .table td, .table th {
+  font-size: 12px;
+  padding: .3rem;
+  vertical-align: top;
+  border-top: 1px solid #efe7f7;
+} */
+
+.table-master > .tbody > tr {
+  cursor: pointer;
+}
+
+.badge{
+  font-size: 14px;
+  border-radius: 25px;
+}
+
+.badge-delete {
+  font-weight: lighter;
+}
+
+.navbar{
+  /* background-color: #7038a8 !important; */
+  /* background-color: #a4334c !important; */
+  box-shadow: 0px 0px 0.8px 0.2px #8c8c8c;
+}
+
+.nav-link {
+  color: grey;
+}
+
+.dropdown-menu{
+  /* border: 1.5px solid #efe7f7; */
+  font-size: 12px;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #6262ff;
+    text-decoration: none;
+    cursor: pointer;
+    /* background-color: #e6d9f2; */
+}
+
+.jumbotron {
+  padding: 1rem 1rem !important;
+}
+
+.text-primary{
+  color: #be9edf !important;
+}
+
+/* .mat-raised-button{
+  color: red !important;
+} */
+
+.mat-primary > span {
+  color: #ffffff !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* span {
+  color: grey;
+} */
+
+.section-title {
+  background-color: #6495ed;
+  color: #ffffff;
+  margin: 0px -35px 15px -35px;
+  padding: 15px;
+}
+
+.card {
+  background: #f9f9f9 !important;
+  border: 0px solid #ffffff;
+  box-shadow: 1px 2px 15px 0 rgba(189,189,189,0.50);
+  border-radius: 5px;
+}
+
+/* .chip {
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 15px 0 rgba(189,189,189,0.50);
+  background: #ffffff !important;
+} */
+
+.chip{
+    display: inline-block;
+    padding: 0 25px;
+    margin-right: 10px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.icon-grey{
+  color: grey;
+}
+
+.badge-light{
+  background-color: #fafafa !important;
+}
+
+.form-control {
+  font-size: 14px;
+}
+
+.form-control:focus {
+  /* border: 5px solid #dccaed !important; */
+}
+
+.radio-label {
+  margin-left: 5px;
+}
+
+/* textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+  outline: none !important;
+  box-shadow: none;
+} */
+
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.btn-link-grey {
+  color: #dccaed !important;
+}
+
+.card-body-roadlist{
+  padding: 0px;
+  min-height: 80vh;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header-row {
+  background-color: #e6d9f2 !important;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  /* display: flex; */
+  align-items: center;
+  /* justify-content: normal; */
+  /* padding: 1rem; */
+  border-top: none;
+}
+
+.btn-block+.btn-block {
+  margin-top: 0rem;
+}
+
+.table-master-card {
+  min-height: 75vh;
+  max-height: 75vh;
+  overflow: auto;
+  /* margin: -15px; */
+}
+
+.table-master-card > div > table > tbody {
+  cursor: pointer;
+}
+
+table > thead {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+table > thead > tr {
+  border-top-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+}
+
+.mat-icon-delete {
+  color: #ff0000 !important;
+}
+
+/* Mixin itself */
+@mixin clearfix() {
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+/* Usage as a mixin */
+.element {
+  @include clearfix;
+}
+
+/* Reduce placeholder font-size */
+/* input::-webkit-input-placeholder {
+  font-size: 12px;
+  color: #a2a2a2 !important;
+  line-height: 3;
+} */
+
+/* scrollbar CSS */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 0px;
+  /* outline: 1px solid slategrey; */
+}
+/* scrollbar CSS */
+
+/* Snackbar CSS */
+
+.mat-snack-bar-container.mat-snack-bar-center {
+    margin-bottom: 20px !important;
+    transform: translateY(100%);
+}
+
+.success-snackbar {
+    background: #006200;
+}
+
+.info-snackbar {
+    background: #2196F3;
+}
+
+.warning-snackbar {
+    background: #ffb327;
+}
+
+.error-snackbar {
+    background: #9d0000;
+}
+/* Snackbar CSS */
