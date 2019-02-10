@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, TemplateRef, ViewContainerRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { MatSort, MatTableDataSource, Sort } from '@angular/material';
+import { MatSort, MatTableDataSource, Sort, MatPaginator } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ActivatedRoute } from '@angular/router';
@@ -10,7 +10,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { DatePipe } from '@angular/common'
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
-import { AppDateAdapter, APP_DATE_FORMATS} from '../../global/adapters/date.adapter';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../global/adapters/date.adapter';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { DataService } from '../../services/data.service';
@@ -30,6 +30,7 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private httpService: HttpService,
     private formBuilder: FormBuilder,
@@ -39,31 +40,31 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private appConfigService: AppConfigService,
-    public dialog: MatDialog) {}
+    public dialog: MatDialog) { }
 
   ngOnInit() {
-    try{
+    try {
 
       this.getSalesDetails();
-    }catch(e){
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
-  ngAfterViewInit(){
-    try{
+  ngAfterViewInit() {
+    try {
       this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => {
         const value: any = data[sortHeaderId];
         return typeof value === "string" ? value.toLowerCase() : value;
       };
-    }catch(e){
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
   list_sales_details: any;
-  getSalesDetails(){
-    try{
+  getSalesDetails() {
+    try {
 
       this.list_sales_details = [{
         dealer_name: 'Shree Datta Enterprises',
@@ -72,43 +73,96 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
         total_amount: 100000,
         paid_amount: 60000,
         remaining: 40000,
-      },{
+      }, {
         dealer_name: 'Seema Enterprises',
         owner_name: 'Seema Patil',
         purchase_stock: '5 items',
         total_amount: 100000,
         paid_amount: 60000,
         remaining: 40000,
-      },{
+      }, {
         dealer_name: 'Shree Datta Enterprises',
         owner_name: 'Chetan Shirbhate',
         purchase_stock: '10 items',
         total_amount: 100000,
         paid_amount: 60000,
         remaining: 40000,
-      },{
+      }, {
         dealer_name: 'Shree Datta Enterprises',
         owner_name: 'Chetan Shirbhate',
         purchase_stock: '10 items',
         total_amount: 100000,
         paid_amount: 60000,
         remaining: 40000,
-      },{
+      }, {
         dealer_name: 'Shree Datta Enterprises',
         owner_name: 'Chetan Shirbhate',
         purchase_stock: '10 items',
         total_amount: 100000,
         paid_amount: 60000,
         remaining: 40000,
-      }];
+      }, {
+        dealer_name: 'Shree Datta Enterprises',
+        owner_name: 'Chetan Shirbhate',
+        purchase_stock: '10 items',
+        total_amount: 100000,
+        paid_amount: 60000,
+        remaining: 40000,
+      }, {
+        dealer_name: 'Shree Datta Enterprises',
+        owner_name: 'Chetan Shirbhate',
+        purchase_stock: '10 items',
+        total_amount: 100000,
+        paid_amount: 60000,
+        remaining: 40000,
+      }, {
+        dealer_name: 'Shree Datta Enterprises',
+        owner_name: 'Chetan Shirbhate',
+        purchase_stock: '10 items',
+        total_amount: 100000,
+        paid_amount: 60000,
+        remaining: 40000,
+      }, {
+        dealer_name: 'Shree Datta Enterprises',
+        owner_name: 'Chetan Shirbhate',
+        purchase_stock: '10 items',
+        total_amount: 100000,
+        paid_amount: 60000,
+        remaining: 40000,
+      }, {
+        dealer_name: 'Shree Datta Enterprises',
+        owner_name: 'Chetan Shirbhate',
+        purchase_stock: '10 items',
+        total_amount: 100000,
+        paid_amount: 60000,
+        remaining: 40000,
+      }, {
+        dealer_name: 'Shree Datta Enterprises',
+        owner_name: 'Chetan Shirbhate',
+        purchase_stock: '10 items',
+        total_amount: 100000,
+        paid_amount: 60000,
+        remaining: 40000,
+      }
+      ];
 
       this.dataSource = new MatTableDataSource(this.list_sales_details);
-    }catch(e){
+      this.dataSource.paginator = this.paginator;
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+  editSalesList(item) {
+    try {
+      console.log(item);
+      this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
     }
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-}
+} 
