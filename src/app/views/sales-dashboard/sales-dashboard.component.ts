@@ -148,6 +148,7 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
 
       this.dataSource = new MatTableDataSource(this.list_sales_details);
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }

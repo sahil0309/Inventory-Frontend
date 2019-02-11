@@ -33,11 +33,16 @@ import { SalesDashboardComponent } from './views/sales-dashboard/sales-dashboard
 import { UserListComponent } from './views/masters/user/user-list/user-list.component';
 import { UserProfileComponent } from './views/masters/user/user-profile/user-profile.component';
 import { ChangePasswordComponent } from './views/change-password/change-password.component';
+import { CategoryComponent } from './views/masters/category/category.component';
+import { MaterialComponent } from './views/masters/material/material.component';
+import { AddCategoryComponent } from './views/masters/category/add-category/add-category.component';
+// import { AddProductComponent } from './views/masters/add-product/add-product.component';
+import { AddMaterialComponent } from './views/masters/material/add-material/add-material.component';
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, DashboardComponent, HeaderComponent, SalesDashboardComponent,
-    UserListComponent, UserProfileComponent, ChangePasswordComponent
+    UserListComponent, UserProfileComponent, ChangePasswordComponent, CategoryComponent, MaterialComponent, AddCategoryComponent, AddMaterialComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, AppBootstrapModule, AppMaterialModule,
@@ -46,10 +51,10 @@ import { ChangePasswordComponent } from './views/change-password/change-password
     // AngularFileUploaderModule,
     FileUploadModule
   ],
-  providers: [ DatePipe, AuthService, AuthGuard ],
+  providers: [DatePipe, AuthService, AuthGuard],
   // providers: [ DatePipe, forwardRef(() => AuthService), forwardRef(() => AuthGuard) ],
   bootstrap: [AppComponent],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: []
 })
 export class AppModule { }

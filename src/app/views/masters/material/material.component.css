@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 12px !important;
+  }
+  
+  .table-container {
+    min-height: 72vh;
+    max-height: 72vh;
+    overflow: auto;
+  }
+  
+  th.mat-sort-header-sorted {
+    color: rgb(0, 0, 0);
+  }
+  

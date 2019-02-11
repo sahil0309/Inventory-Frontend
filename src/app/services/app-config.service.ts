@@ -137,6 +137,10 @@ export class AppConfigService {
     return JSON.parse(sessionStorage.getItem(key));
   }
 
+  removeSessionObj(key: string) {
+    sessionStorage.removeItem(key);
+  }
+
   logout() {
     try {
       sessionStorage.clear();
