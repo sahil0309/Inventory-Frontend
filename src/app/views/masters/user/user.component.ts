@@ -37,7 +37,7 @@ export class UserComponent implements OnInit {
   list_user: any;
   getUserList(){
     try{
-      this.httpService.get(`getUserList`).subscribe(res => {
+      this.httpService.get(`getUserList`,'user').subscribe(res => {
         this.list_user = res;
         console.log(this.list_user);
       });

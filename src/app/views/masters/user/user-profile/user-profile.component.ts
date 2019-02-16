@@ -156,7 +156,7 @@ export class UserProfileComponent implements OnInit {
         'objUserData': this.objUserRequest
       };
 
-      this.httpService.post(`getUserInfo`, data).subscribe((res: any) => {
+      this.httpService.post(`getUserInfo`,'user', data).subscribe((res: any) => {
         this.objUser = res;
         console.log('this.objUser');
         console.log(this.objUser);
@@ -194,7 +194,7 @@ export class UserProfileComponent implements OnInit {
 
       console.log('data', data);
 
-      this.httpService.post(`saveUser`, data).subscribe((res: any) => {
+      this.httpService.post(`saveUser`,'user', data).subscribe((res: any) => {
         // this.getUserInfo();
         this.toastr.success(res.message);
         this.location.back();

@@ -128,7 +128,7 @@ export class LoginComponent implements OnInit {
         objLoginData: this.objLogin
       }
 
-      this.httpService.post('sendPassword', data).subscribe((res: any) => {
+      this.httpService.post('sendPassword','user', data).subscribe((res: any) => {
 
         if(res.status === 'success'){
           this.toastr.success(res.message);

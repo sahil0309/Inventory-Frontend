@@ -25,6 +25,10 @@ body {
   /* background-color: #e1e7f3 !important; */
 }
 
+.mat-icon {
+  cursor: pointer;
+}
+
 .clickable {
   cursor: pointer !important;
 }
@@ -32,6 +36,23 @@ body {
 .navbar-nav > li > a {
   cursor: pointer;
 }
+
+table {
+  width: 100%;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 12px !important;
+}
+
+.table-container {
+  min-height: 65vh;
+  max-height: 65vh;
+  overflow: auto;
+}
+
+th.mat-sort-header-sorted {
+  color: rgb(0, 0, 0);
+}
+
 
 .cdk-global-overlay-wrapper, .cdk-overlay-container {
    z-index: 99999 !important;

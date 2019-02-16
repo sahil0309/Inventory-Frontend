@@ -38,11 +38,12 @@ import { MaterialComponent } from './views/masters/material/material.component';
 import { AddCategoryComponent } from './views/masters/category/add-category/add-category.component';
 // import { AddProductComponent } from './views/masters/add-product/add-product.component';
 import { AddMaterialComponent } from './views/masters/material/add-material/add-material.component';
+import { PurchaseDashboardComponent } from './views/purchase-dashboard/purchase-dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, DashboardComponent, HeaderComponent, SalesDashboardComponent,
-    UserListComponent, UserProfileComponent, ChangePasswordComponent, CategoryComponent, MaterialComponent, AddCategoryComponent, AddMaterialComponent
+    UserListComponent, UserProfileComponent, ChangePasswordComponent, CategoryComponent, MaterialComponent, AddCategoryComponent, AddMaterialComponent, PurchaseDashboardComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, AppBootstrapModule, AppMaterialModule,

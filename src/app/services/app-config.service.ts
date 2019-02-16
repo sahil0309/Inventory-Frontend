@@ -27,7 +27,7 @@ export class AppConfigService {
 
   getDistrictList() {
     try {
-      return this.httpService.post('getDistrictList', this.data);
+      return this.httpService.post('getDistrictList', 'user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -35,7 +35,7 @@ export class AppConfigService {
 
   getCityList() {
     try {
-      return this.httpService.post('getCityList', this.data);
+      return this.httpService.post('getCityList', 'user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -43,7 +43,7 @@ export class AppConfigService {
 
   getAreaList() {
     try {
-      return this.httpService.post('getAreaList', this.data);
+      return this.httpService.post('getAreaList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -51,7 +51,7 @@ export class AppConfigService {
 
   getBuildingGradeList() {
     try {
-      return this.httpService.post('getBuildingGradeList', this.data);
+      return this.httpService.post('getBuildingGradeList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -59,7 +59,7 @@ export class AppConfigService {
 
   getDesignationList() {
     try {
-      return this.httpService.post('getDesignationList', this.data);
+      return this.httpService.post('getDesignationList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -67,7 +67,7 @@ export class AppConfigService {
 
   getFloorGradeList() {
     try {
-      return this.httpService.post('getFloorGradeList', this.data);
+      return this.httpService.post('getFloorGradeList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -75,7 +75,7 @@ export class AppConfigService {
 
   getUsageList() {
     try {
-      return this.httpService.post('getUsageList', this.data);
+      return this.httpService.post('getUsageList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -83,7 +83,7 @@ export class AppConfigService {
 
   getUnitGradeList() {
     try {
-      return this.httpService.post('getUnitGradeList', this.data);
+      return this.httpService.post('getUnitGradeList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -91,7 +91,7 @@ export class AppConfigService {
 
   getUserList() {
     try {
-      return this.httpService.get('getUserList/4');
+      return this.httpService.get('getUserList/4','user');
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -99,7 +99,7 @@ export class AppConfigService {
 
   getVisitorList() {
     try {
-      return this.httpService.get('getVisitorList');
+      return this.httpService.get('getVisitorList','user');
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -107,7 +107,7 @@ export class AppConfigService {
 
   getAllUserList() {
     try {
-      return this.httpService.get('getUserList/0');
+      return this.httpService.get('getUserList/0','user');
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -115,7 +115,7 @@ export class AppConfigService {
 
   getRoleList() {
     try {
-      return this.httpService.get('getRoleList');
+      return this.httpService.get('getRoleList','user');
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -123,7 +123,7 @@ export class AppConfigService {
 
   getStockSizeList() {
     try {
-      return this.httpService.post('getStockSizeList', this.data);
+      return this.httpService.post('getStockSizeList','user', this.data);
     } catch (e) {
       this.toastr.error(e.message);
     }

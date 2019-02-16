@@ -116,7 +116,7 @@ export class ChangePasswordComponent implements OnInit {
         objPasswordData: this.changePasswordForm.value
       }
 
-      this.httpService.post('changePassword', data).subscribe((res: any) => {
+      this.httpService.post('changePassword','user', data).subscribe((res: any) => {
 
         if(res.status === 'success'){
           this.toastr.success(res.message);

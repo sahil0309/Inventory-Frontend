@@ -157,7 +157,7 @@ export class UserListComponent implements OnInit {
 
       console.log(this.userForm.value);
 
-      this.httpService.put('deleteUser', data).subscribe((res: any) => {
+      this.httpService.put('deleteUser','user', data).subscribe((res: any) => {
 
         console.log(res);
 

@@ -15,6 +15,7 @@ import { AddCategoryComponent } from './views/masters/category/add-category/add-
 import { AddMaterialComponent } from './views/masters/material/add-material/add-material.component';
 import { AuthGuard } from './services/auth.guard';
 
+import { PurchaseDashboardComponent } from './views/purchase-dashboard/purchase-dashboard.component';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: "full" },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'sales-dashboard', component: SalesDashboardComponent },
+  { path: 'purchase-dashboard', component: PurchaseDashboardComponent },
   { path: 'category', component: CategoryComponent },
   { path: 'material', component: MaterialComponent },
 

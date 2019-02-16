@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
+import { PromiseService } from '../../../../services/promise.service';
 import { AppConfigService } from '../../../../services/app-config.service';
 
 
@@ -27,7 +28,7 @@ import { AppConfigService } from '../../../../services/app-config.service';
 export class AddCategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
-
+  categoryId: number;
   constructor(private httpService: HttpService,
     private formBuilder: FormBuilder,
     private snackbarService: SnackbarService,
@@ -37,11 +38,37 @@ export class AddCategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private appConfigService: AppConfigService,
     private toastr: ToastrService,
+    private promiseService: PromiseService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
     this.resetObjCategoryForm();
-    this.bindCategoryForm();
+    this.route.params.subscribe(params => {
+      this.categoryId = +params['id'];
+      let templateType = params['template'];
+      console.log(templateType);
+      if (templateType == 'edit') {
+        this.getCategoryDetails(this.categoryId);
+      }
+      else {
+        this.bindCategoryForm();
+      }
+    });
+
+  }
+
+  getCategoryDetails(categoryId) {
+    try {
+      let url = "";
+      this.promiseService.get(url, 'api').then((res: any) => {
+        this.ObjCategoryForm = res;
+        this.bindCategoryForm();
+      }, (err) => {
+        this.toastr.error(err);
+      })
+    } catch (e) {
+      this.toastr.error(e.message);
+    }
   }
 
   ObjCategoryForm: any = [];
@@ -61,9 +88,17 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
-  saveUserProfile() {
+  saveCategory() {
     try {
       console.log(this.categoryForm.value);
+    } catch (e) {
+      this.toastr.error(e.message);
+    }
+  }
+
+  Back() {
+    try {
+      this.router.navigate(["category"]);
     } catch (e) {
       this.toastr.error(e.message);
     }
