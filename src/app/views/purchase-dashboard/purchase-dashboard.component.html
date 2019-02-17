@@ -20,58 +20,27 @@
   <br />
 
 
-  <div class="table-container mat-elevation-z8">
+  <div class="table-container mat-elevation-z8" *ngIf="showTable">
     <table mat-table [dataSource]="dataSource" matSort>
-
-      <!-- <ng-container matColumnDef="Product_Id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.Product_Id}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Product_Name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.Product_Name}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Category_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.Category_name}}</td>
-      </ng-container>
-      
-      <ng-container matColumnDef="Quantity">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Quantity </th>
-        <td mat-cell *matCellDef="let element"> {{element.Quantity}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Category_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.Category_name}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Category_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.Category_name}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="Category_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.Category_name}}</td>
-      </ng-container> -->
-
 
       <ng-container *ngFor="let columnHeader of displayedColumns" [matColumnDef]="columnHeader">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{columnHeader}} </th>
 
         <div *ngIf="columnHeader!='Action'">
-          <td mat-cell *matCellDef="let element"> {{element[columnHeader]}}
-          </td>
+          <div *ngIf="columnHeader!='Date'">
+            <td mat-cell *matCellDef="let element"> {{element[columnHeader]}}</td>
+          </div>
+          <div *ngIf="columnHeader=='Date'">
+            <td mat-cell *matCellDef="let element"> {{element[columnHeader] | date:'dd-MM-yyyy'}}
+          </div>
         </div>
-        <div *ngIf="columnHeader=='Action'">
+
+        <div *ngIf="columnHeader==='Action'">
           <td mat-cell *matCellDef="let element">
             <!-- <i class="material-icons"> edit</i> -->
 
             <mat-icon (click)="onEdit(element)" matTooltip="Edit Stock">edit</mat-icon>
-            <mat-icon (click)="onDelete(element)" matTooltip="Delete Stock" style="color: red;">clear</mat-icon> 
+            <mat-icon (click)="onDelete(element)" matTooltip="Delete Stock" style="color: red;">clear</mat-icon>
             <!-- <button matTooltip="Get previous week schedule" (click)="editBuildingSurvey(element)" mat-mini-fab
               class="mat-mini-fab-white" type="button">
               <mat-icon class="mat-icon-edit">edit</mat-icon>
@@ -79,19 +48,6 @@
           </td>
         </div>
       </ng-container>
-
-      <!-- <ng-container matColumnDef="Action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
-        <td mat-cell *matCellDef="let element">
-          <i class="material-icons"> edit</i>
-
-          <mat-icon (click)="onEdit(element)" matTooltip="Edit Stock">edit</mat-icon>
-          <mat-icon (click)="onDelete(element)" matTooltip="Delete Stock" style="color: red;">clear</mat-icon> -->
-      <!-- <button matTooltip="Get previous week schedule" (click)="editBuildingSurvey(element)" mat-mini-fab class="mat-mini-fab-white" type="button">
-            <mat-icon class="mat-icon-edit">edit</mat-icon>
-          </button> -->
-      <!-- </td> -->
-      <!-- </ng-container> -->
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

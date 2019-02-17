@@ -27,7 +27,8 @@ const ELEMENT_DATA: any[] = [];
 })
 export class PurchaseDashboardComponent implements OnInit {
 
-  displayedColumns: string[] = ['Product_Id', 'Product_Name', 'Category_name', 'Quantity', 'Date', 'Cost_Price', 'Selling_Price','Action'];
+  showTable: boolean = false;
+  displayedColumns: string[] = ['Product_Id', 'Product_Name', 'Category_name', 'Quantity', 'Date', 'Cost_Price', 'Selling_Price', 'Action'];
   // displayedColumnsWithAction:string[]=['Product_Id', 'Product_Name', 'Category_name', 'Quantity', 'Date', 'Cost_Price', 'Selling_Price','Action'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
@@ -65,21 +66,31 @@ export class PurchaseDashboardComponent implements OnInit {
         Product_Name: 'Ambuja Cement',
         Category_name: 'Cement',
         Quantity: 20,
-        Date: "11/12/2019",
+        Date: new Date(),
         Cost_Price: 100,
         Selling_Price: 150
+      },
+      {
+        Product_Id: 1,
+        Product_Name: 'Ambuja Cement',
+        Category_name: 'Cement',
+        Quantity: 20,
+        Date: new Date(),
+        Cost_Price: 100,
+        Selling_Price: 250
       }, {
         Product_Id: 2,
         Product_Name: 'Ultra Tech Cement',
         Category_name: 'Cement',
         Quantity: 20,
-        Date: "11/12/2019",
+        Date: new Date(),
         Cost_Price: 200,
         Selling_Price: 250
       }
       ];
 
       this.dataSource = new MatTableDataSource(this.list_sales_details);
+      this.showTable = true;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     } catch (e) {

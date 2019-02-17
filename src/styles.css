@@ -444,5 +444,9 @@ table > thead > tr {
 
 .error-snackbar {
     background: #9d0000;
+  }
+  
+  #toast-container > div {
+    opacity:1;
 }
 /* Snackbar CSS */

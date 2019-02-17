@@ -29,6 +29,7 @@ export class AddCategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
   categoryId: number;
+  template: string = "Add Category";
   constructor(private httpService: HttpService,
     private formBuilder: FormBuilder,
     private snackbarService: SnackbarService,
@@ -43,12 +44,14 @@ export class AddCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.resetObjCategoryForm();
+    this.bindCategoryForm();
     this.route.params.subscribe(params => {
       this.categoryId = +params['id'];
       let templateType = params['template'];
       console.log(templateType);
-      if (templateType == 'edit') {
-        this.getCategoryDetails(this.categoryId);
+      if (templateType == 'Edit') {
+        this.template = "Edit Category";
+        this.getCategoryById(this.categoryId);
       }
       else {
         this.bindCategoryForm();
@@ -57,10 +60,11 @@ export class AddCategoryComponent implements OnInit {
 
   }
 
-  getCategoryDetails(categoryId) {
+  getCategoryById(categoryId) {
     try {
       let url = "";
-      this.promiseService.get(url, 'api').then((res: any) => {
+      this.promiseService.get("category/" + categoryId, 'api').then((res: any) => {
+        console.log("res", res);
         this.ObjCategoryForm = res;
         this.bindCategoryForm();
       }, (err) => {
@@ -88,10 +92,43 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
-  saveCategory() {
+  Save() {
     try {
       console.log(this.categoryForm.value);
-    } catch (e) {
+
+
+      if (this.template !== "Edit Category") {
+        this.promiseService.post('category', 'api', this.categoryForm.value).then((res: any) => {
+          console.log("res", res);
+          if (res.status !== 'error') {
+            this.toastr.success(res.message);
+            this.router.navigate(["category"]);
+          }
+          else
+            this.toastr.error(res.message);
+        }, (err) => {
+          console.log(err);
+        });
+      }
+      else {
+        let data={
+          categoryId:this.categoryId,
+          categoryName:this.categoryForm.value.categoryName
+        }
+        this.promiseService.put('category', 'api', data).then((res: any) => {
+          console.log("res", res);
+          if (res.status !== 'error') {
+            this.toastr.success(res.message);
+            this.router.navigate(["category"]);
+          }
+          else
+            this.toastr.error(res.message);
+        }, (err) => {
+          console.log(err);
+        });
+      }
+    }
+    catch (e) {
       this.toastr.error(e.message);
     }
   }

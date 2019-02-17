@@ -11,10 +11,11 @@ import { switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common'
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
 import { AppDateAdapter, APP_DATE_FORMATS } from '../../../global/adapters/date.adapter';
-
+import { ToastrService } from 'ngx-toastr'
 import { SnackbarService } from '../../../services/snackbar.service';
 import { DataService } from '../../../services/data.service';
 import { HttpService } from '../../../services/http.service';
+import { PromiseService } from '../../../services/promise.service';
 import { AppConfigService } from '../../../services/app-config.service';
 
 const ELEMENT_DATA: any[] = [];
@@ -27,7 +28,7 @@ const ELEMENT_DATA: any[] = [];
 
 export class CategoryComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['Category_Id', 'Category_name', 'Action'];
+  displayedColumns: string[] = ['SrNo', 'categoryName', 'Action'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;
@@ -41,12 +42,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private appConfigService: AppConfigService,
+    private promiseService: PromiseService,
+    private toastr: ToastrService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
     try {
-
-      this.getSalesDetails();
+      this.getCategoryList();
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
@@ -56,21 +58,18 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   }
 
   list_sales_details: any;
-  getSalesDetails() {
+  getCategoryList() {
     try {
-
-      this.list_sales_details = [{
-        Category_Id: 1,
-        Category_name: 'Cement',
-      }, {
-        Category_Id: 2,
-        Category_name: 'Color',
-      }
-      ];
-
-      this.dataSource = new MatTableDataSource(this.list_sales_details);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.promiseService.get("category", "api").then((res: any) => {
+        console.log('Response',res);
+        this.list_sales_details = res;
+        this.dataSource = new MatTableDataSource(this.list_sales_details);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, (err) => {
+        console.log('Error',err);
+        this.toastr.error(err.message)
+      });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
@@ -79,7 +78,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   onEdit(item) {
     try {
       console.log(item);
-      this.router.navigate(["edit-category", item.Category_Id, { template: 'Edit' }]);
+      this.router.navigate(["edit-category", item.categoryId, { template: 'Edit' }]);
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');

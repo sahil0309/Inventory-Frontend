@@ -1,0 +1,79 @@
+<div class="container">
+
+
+  <div class="row mt-1">
+    <div class="col-sm-3">
+      <h6 class="mt-3">Stock Report</h6>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-5">
+      <mat-form-field>
+        <input matInput [(ngModel)]="productName" placeholder="Product Name">
+      </mat-form-field>
+    </div>
+    <!-- <div class="col-6 col-sm-5">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Purchase Date" [(ngModel)]="dateOfPurchase">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div> -->
+    <div class="col-6 col-sm-2">
+      <button mat-flat-button color="primary" type="button" matTooltip="Search" (click)="SearchStock()"
+        class="float-right">Search</button>
+    </div>
+  </div>
+
+  <div class="row w-100 mt-4" *ngIf="showCards">
+    <div class="col-sm-3 col-6">
+      <div class="card border-info mx-sm-1 p-3">
+        <!-- <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span> -->
+        <!-- </div> -->
+        <div class="text-info text-center mt-3">
+          <h5>Selling Price</h5>
+        </div>
+        <div class="text-info text-center mt-2">
+          <h1>{{sellingPrice}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-6">
+      <div class="card border-info mx-sm-1 p-3">
+        <!-- <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span> -->
+        <!-- </div> -->
+        <div class="text-info text-center mt-3">
+          <h5>Total Stock</h5>
+        </div>
+        <div class="text-info text-center mt-2">
+          <h1>{{totalStock}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-6 mt-2 mt-sm-0">
+      <div class="card border-info mx-sm-1 p-3">
+        <!-- <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span> -->
+        <!-- </div> -->
+        <div class="text-info text-center mt-3">
+          <h5>Product Name</h5>
+        </div>
+        <div class="text-info text-center mt-2">
+          <h1>{{productName1}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-6 mt-2 mt-sm-0">
+      <div class="card border-info mx-sm-1 p-3">
+        <!-- <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span> -->
+        <!-- </div> -->
+        <div class="text-info text-center mt-3">
+          <h5>Category Name</h5>
+        </div>
+        <div class="text-info text-center mt-2">
+          <h1>{{categoryName}}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

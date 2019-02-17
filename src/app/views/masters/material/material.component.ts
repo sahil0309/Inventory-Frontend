@@ -5,7 +5,7 @@ import { MatSort, MatTableDataSource, Sort, MatPaginator } from '@angular/materi
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { DatePipe } from '@angular/common'
@@ -15,8 +15,9 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../../../global/adapters/date.
 import { SnackbarService } from '../../../services/snackbar.service';
 import { DataService } from '../../../services/data.service';
 import { HttpService } from '../../../services/http.service';
+import { PromiseService } from '../../../services/promise.service';
 import { AppConfigService } from '../../../services/app-config.service';
-
+import { ToastrService } from 'ngx-toastr'
 const ELEMENT_DATA: any[] = [];
 
 
@@ -27,7 +28,7 @@ const ELEMENT_DATA: any[] = [];
 })
 export class MaterialComponent implements OnInit {
 
-  displayedColumns: string[] = ['Product_Id', 'Product_Name', 'Category_name', 'Action'];
+  displayedColumns: string[] = ['SrNo', 'productName', 'categoryName', 'Action'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;
@@ -41,38 +42,59 @@ export class MaterialComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private appConfigService: AppConfigService,
+    private promiseService: PromiseService,
+    private toastr: ToastrService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
     try {
+      this.getCategoryList();
+      this.getProductList();
 
-      this.getSalesDetails();
     } catch (e) {
-      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+      this.toastr.error(e.message);
     }
   }
 
   ngAfterViewInit() {
   }
 
-  list_sales_details: any;
-  getSalesDetails() {
+  category_list: any;
+  getCategoryList() {
     try {
+      this.promiseService.get('category', 'api').then((res: any) => {
+        this.category_list = res;
+        console.log(res);
+      }, err => {
+        this.toastr.error(err.message)
+      });
+    } catch (e) {
+      this.toastr.error(e.message);
+    }
+  }
 
-      this.list_sales_details = [{
-        Product_Id: 1,
-        Product_Name: 'Ambuja Cement',
-        Category_name: 'Cement',
-      }, {
-        Product_Id: 2,
-        Product_Name: 'Ultra Tech Cement',
-        Category_name: 'Cement',
-      }
-      ];
-
-      this.dataSource = new MatTableDataSource(this.list_sales_details);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+  list_sales_details: any;
+  product_list: any;
+  getProductList() {
+    try {
+      this.promiseService.get('product', 'api').then((res: any) => {
+        this.product_list = res;
+        console.log(res);
+        if (this.category_list) {
+          this.product_list.forEach(element => {
+            let categoryObj = this.category_list.filter(e => e.categoryId == element.categoryId)[0];
+            element.categoryName = categoryObj.categoryName;
+            console.log(categoryObj);
+          });
+          console.log(this.product_list);
+          this.dataSource = new MatTableDataSource(this.product_list);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      }, err => {
+        this.toastr.error(err.message)
+      });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
@@ -81,7 +103,7 @@ export class MaterialComponent implements OnInit {
   onEdit(item) {
     try {
       console.log(item);
-      this.router.navigate(["edit-material", item.Product_Id, { template: 'Edit' }]);
+      this.router.navigate(["edit-material", item.productId, { template: 'Edit' }]);
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');

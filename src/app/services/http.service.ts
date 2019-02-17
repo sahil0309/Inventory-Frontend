@@ -9,7 +9,7 @@ export class HttpService {
 
   // baseUrl = 'http://localhost:59226/WCFService.svc/'; // Localhost
   baseUrl = 'http://13.232.187.94/DBCBService/WCFService.svc/'; // Server dev
-  baseNodeUrl = "";
+  baseNodeUrl = "http://localhost:3000/api/";
 
   constructor(private http: HttpClient) { }
 

@@ -16,6 +16,7 @@ import { AddMaterialComponent } from './views/masters/material/add-material/add-
 import { AuthGuard } from './services/auth.guard';
 
 import { PurchaseDashboardComponent } from './views/purchase-dashboard/purchase-dashboard.component';
+import { PurchaseReportComponent } from './views/purchase-report/purchase-report.component';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
 
   { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: 'purchase-report', component: PurchaseReportComponent },
 
   { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
