@@ -27,12 +27,15 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{columnHeader}} </th>
 
         <div *ngIf="columnHeader!='Action'">
-          <div *ngIf="columnHeader!='Date'">
-            <td mat-cell *matCellDef="let element"> {{element[columnHeader]}}</td>
+          <div *ngIf="columnHeader=='SrNo'">
+            <td mat-cell *matCellDef="let element;let i = index;">{{i+1}}</td>
           </div>
-          <div *ngIf="columnHeader=='Date'">
+          <div *ngIf="columnHeader=='purchaseDate';else template">
             <td mat-cell *matCellDef="let element"> {{element[columnHeader] | date:'dd-MM-yyyy'}}
           </div>
+          <ng-template #template>
+            <td mat-cell *matCellDef="let element"> {{element[columnHeader]}}</td>
+          </ng-template>
         </div>
 
         <div *ngIf="columnHeader==='Action'">

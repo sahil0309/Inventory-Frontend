@@ -18,13 +18,17 @@ import { AuthGuard } from './services/auth.guard';
 import { PurchaseDashboardComponent } from './views/purchase-dashboard/purchase-dashboard.component';
 import { PurchaseReportComponent } from './views/purchase-report/purchase-report.component';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
-
+import { AddStockComponent } from './views/purchase-dashboard/add-stock/add-stock.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: LoginComponent, pathMatch: "full" },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'sales-dashboard', component: SalesDashboardComponent },
   { path: 'purchase-dashboard', component: PurchaseDashboardComponent },
+
+  { path: 'add-stock', component: AddStockComponent },
+  { path: 'edit-stock/:id', component: AddStockComponent },
+
   { path: 'category', component: CategoryComponent },
   { path: 'material', component: MaterialComponent },
 

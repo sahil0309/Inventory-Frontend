@@ -96,7 +96,6 @@ export class AddCategoryComponent implements OnInit {
     try {
       console.log(this.categoryForm.value);
 
-
       if (this.template !== "Edit Category") {
         this.promiseService.post('category', 'api', this.categoryForm.value).then((res: any) => {
           console.log("res", res);

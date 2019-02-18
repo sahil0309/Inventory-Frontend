@@ -49,13 +49,6 @@ export class AddMaterialComponent implements OnInit {
 
   ngOnInit() {
     this.getCategoryList();
-
-    this.filteredOptions = this.categoryFormControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterCategory(value))
-      );
-
     this.resetObjProductForm();
     this.bindProductForm();
 
@@ -81,6 +74,12 @@ export class AddMaterialComponent implements OnInit {
         this.category_list = res;
         console.log("categoryList", this.category_list);
         // this._filterCategory('');
+        this.filteredOptions = this.categoryFormControl.valueChanges
+          .pipe(
+            startWith(''),
+            map(value => this._filterCategory(value))
+          );
+
       }, err => {
         this.toastr.error(err.message)
       });
@@ -91,15 +90,16 @@ export class AddMaterialComponent implements OnInit {
 
   private _filterCategory(value: string): string[] {
     const filterValue = value.toLowerCase();
-    console.log('value', filterValue);
+    // console.log('value', filterValue);
     if (this.category_list) {
       if (value.length > 0)
         return this.category_list.map(e => e.categoryName).filter(option => option.toLowerCase().includes(filterValue));
       else {
-        console.log("else");
+        // console.log("else");
         return this.category_list.map(e => e.categoryName)
       }
     }
+    // console.log("category list", this.category_list);
   }
 
   ObjProductForm: any = [];

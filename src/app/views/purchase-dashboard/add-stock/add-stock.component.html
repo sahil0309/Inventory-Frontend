@@ -1,0 +1,95 @@
+<div class="container">
+
+  <div class="row">
+    <div class="offset-sm-2 col-sm-8">
+      <br />
+      <h5>{{templateType}}</h5>
+      <br />
+      <mat-card>
+        <form [formGroup]="stockForm" (ngSubmit)="save()">
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Product Name" aria-label="Number" matInput
+                    [formControl]="productFormControl" [matAutocomplete]="auto1">
+                  <mat-autocomplete #auto1="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredProductOptions | async" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="costPrice" placeholder="Cost Price">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="sellingPrice" placeholder="Selling Price">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="quantityAvailable" placeholder="Quantity">
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-6">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" formControlName="purchaseDate" placeholder="Purchase Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <!-- 
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="productName" placeholder="Product Name">
+                </mat-form-field>
+              </div>
+            </div>
+          </div> -->
+          <br />
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6 col-sm-6">
+                <!-- <button type="button" mat-raised-button class="btn btn-block col-sm-2 mr-3" (click)="ngOnInit()">RESET</button> -->
+                <button type="button" mat-raised-button (click)="Back()"
+                  class="btn btn-block col-2 col-sm-2 ">Back</button>
+              </div>
+              <div class="col-6 col-sm-6">
+                <button type="submit" mat-raised-button class="btn btn-block offset-4 col-2 col-sm-2"
+                  color="primary">SAVE</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+              <div class="row">
+                <div class="col-sm-8"></div>
+                <button type="button" class="btn btn-sm col-sm-2 btn-block" (click)="closeModal(userTemplate)">Close</button>
+                <button type="submit" class="btn btn-sm btn-primary col-sm-2 btn-block" [disabled]="!userForm.valid" (click)="saveUser()">Save</button>
+              </div>
+            </div> -->
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

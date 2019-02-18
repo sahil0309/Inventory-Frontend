@@ -41,11 +41,12 @@ import { AddMaterialComponent } from './views/masters/material/add-material/add-
 import { PurchaseDashboardComponent } from './views/purchase-dashboard/purchase-dashboard.component';
 // import { SalesReportComponent } from './views/sales-report/sales-report.component';
 import { PurchaseReportComponent } from './views/purchase-report/purchase-report.component';
+import { AddStockComponent } from './views/purchase-dashboard/add-stock/add-stock.component';
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, DashboardComponent, HeaderComponent, SalesDashboardComponent,
-    UserListComponent, UserProfileComponent, ChangePasswordComponent, CategoryComponent, MaterialComponent, AddCategoryComponent, AddMaterialComponent, PurchaseDashboardComponent, PurchaseReportComponent
+    UserListComponent, UserProfileComponent, ChangePasswordComponent, CategoryComponent, MaterialComponent, AddCategoryComponent, AddMaterialComponent, PurchaseDashboardComponent, PurchaseReportComponent, AddStockComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, AppBootstrapModule, AppMaterialModule,
