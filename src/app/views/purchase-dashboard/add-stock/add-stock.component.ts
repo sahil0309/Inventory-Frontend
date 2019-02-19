@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { MatSort, MatTableDataSource, Sort, MatPaginator } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-
+import { LOCALE_ID } from '@angular/core'
+import * as moment from 'moment'
 import { ActivatedRoute } from '@angular/router';
 // import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -24,7 +25,10 @@ import { AppConfigService } from '../../../services/app-config.service';
 @Component({
   selector: 'app-add-stock',
   templateUrl: './add-stock.component.html',
-  styleUrls: ['./add-stock.component.css']
+  styleUrls: ['./add-stock.component.css'],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'en-IN' }
+  ]
 })
 export class AddStockComponent implements OnInit {
   constructor(private httpService: HttpService,
@@ -190,11 +194,14 @@ export class AddStockComponent implements OnInit {
   save() {
     try {
       console.log(this.stockForm.value.purchaseDate);
-
-      
+      let options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
+      console.log(this.stockForm.value.purchaseDate.toLocaleDateString("en-IN"));
+      console.log(this.stockForm.value.purchaseDate.toISOString().split('T')[0]);
+      console.log(this.stockForm.value.purchaseDate.toUTCString());
+      console.log(moment(this.stockForm.value.purchaseDate).format("YYYY-MM-DD"), "Moment");
       // let date1 = this.stockForm.value.purchaseDate.setHours(this.stockForm.value.purchaseDate.getHours() + 6);
-      let date = this.stockForm.value.purchaseDate.toISOString().split('T')[0];
-      console.log(date);
+      let date = moment(this.stockForm.value.purchaseDate).format("YYYY-MM-DD");
+      // console.log();
       let productObj = this.product_list.filter(e => e.productName === this.productFormControl.value)[0];
 
       this.stockForm.patchValue({
