@@ -6,31 +6,50 @@
       <h5>{{templateType}}</h5>
       <br />
       <mat-card>
-        <form [formGroup]="stockForm" (ngSubmit)="save()">
+        <form [formGroup]="dealerForm" (ngSubmit)="save()">
 
           <div class="form-group">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-6 col-sm-6">
                 <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Product Name" aria-label="Number" matInput
-                    [formControl]="productFormControl" [matAutocomplete]="auto1">
-                  <mat-autocomplete #auto1="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredProductOptions | async" [value]="option">
-                      {{option}}
-                    </mat-option>
-                  </mat-autocomplete>
+                  <input matInput formControlName="dealerContactPerson" placeholder="Name">
                 </mat-form-field>
               </div>
 
-              <div class="col-sm-6">
+              <div class="col-6 col-sm-6">
                 <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Agency Name" aria-label="Number" matInput
-                    [formControl]="dealerFormControl" [matAutocomplete]="auto">
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredDealerOptions | async" [value]="option">
-                      {{option}}
-                    </mat-option>
-                  </mat-autocomplete>
+                  <input matInput formControlName="dealerUserName" placeholder="User Name">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="dealerEmail" placeholder="Email">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="dealerAgencyName" placeholder="Agency Name">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="dealerAddress" placeholder="Address">
                 </mat-form-field>
               </div>
             </div>
@@ -40,12 +59,12 @@
             <div class="row">
               <div class="col-6 col-sm-6">
                 <mat-form-field class="example-full-width">
-                  <input matInput formControlName="costPrice" placeholder="Cost Price">
+                  <input matInput formControlName="dealerCity" placeholder="City">
                 </mat-form-field>
               </div>
-              <div class="col-sm-6">
+              <div class="col-6 col-sm-6">
                 <mat-form-field class="example-full-width">
-                  <input matInput formControlName="quantityPurchased" placeholder="Quantity">
+                  <input matInput formControlName="dealerPinCode" placeholder="Pincode">
                 </mat-form-field>
               </div>
             </div>
@@ -53,11 +72,15 @@
 
           <div class="form-group">
             <div class="row">
-              <div class="col-sm-6">
-                <mat-form-field>
-                  <input matInput [matDatepicker]="picker" formControlName="purchaseTimeStamp" placeholder="Purchase Date">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="dealerPhoneNumber" placeholder="Phone Number">
+                </mat-form-field>
+              </div>
+
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput formControlName="dealerMobileNumber" placeholder="Mobile Number">
                 </mat-form-field>
               </div>
             </div>

@@ -58,6 +58,7 @@ export class MaterialComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    console.log(this.dataSource);
   }
 
   category_list: any;
@@ -87,10 +88,12 @@ export class MaterialComponent implements OnInit {
             element.categoryName = categoryObj.categoryName;
             console.log(categoryObj);
           });
-          console.log(this.product_list);
+          console.log("list",this.product_list);
+          
           this.dataSource = new MatTableDataSource(this.product_list);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          // this.dataSource.sort = this.sort;
         }
       }, err => {
         this.toastr.error(err.message)
@@ -99,6 +102,7 @@ export class MaterialComponent implements OnInit {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
+  
 
   onEdit(item) {
     try {

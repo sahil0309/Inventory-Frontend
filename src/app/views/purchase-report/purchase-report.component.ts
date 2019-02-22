@@ -5,8 +5,10 @@ import { MatSort, MatTableDataSource, Sort, MatPaginator } from '@angular/materi
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { DatePipe } from '@angular/common'
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
@@ -38,9 +40,14 @@ export class PurchaseReportComponent implements OnInit {
     private toastr: ToastrService,
     public dialog: MatDialog) { }
 
+
+  productFormControl = new FormControl();
+  // filteredCategoryOptions: Observable<string[]>;
+  filteredProductOptions: Observable<string[]>;
+
   ngOnInit() {
     try {
-
+      this.getProductList();
       this.getStockList();
     } catch (e) {
       // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -155,17 +162,19 @@ export class PurchaseReportComponent implements OnInit {
         // });
       }
       else {
-        filterStock = this.stock_list.filter(e => e.productName == this.productName);
+        filterStock = this.stock_list.filter(e => e.productName == this.productFormControl.value);
         console.log(filterStock);
         this.stockReportArray = [];
-        this.stockReportArray.push({
-          categoryName: filterStock[0].categoryName,
-          sellingPrice: filterStock[0].sellingPrice,
-          productName: filterStock[0].productName,
-          quantity: filterStock[0].quantity,
-          quantityAvailable: filterStock[0].quantityAvailable,
-          lastPurchased: filterStock[0].lastPurchased
-        })
+        this.stockReportArray = filterStock;
+        console.log(this.stockReportArray);
+        // this.stockReportArray.push({
+        //   categoryName: filterStock[0].categoryName,
+        //   sellingPrice: filterStock[0].sellingPrice,
+        //   productName: filterStock[0].productName,
+        //   quantity: filterStock[0].quantity,
+        //   quantityAvailable: filterStock[0].quantityAvailable,
+        //   lastPurchased: filterStock[0].lastPurchased
+        // })
         // console.log(e.Date)
         //   console.log("length", filterStock.length);
 
@@ -189,6 +198,44 @@ export class PurchaseReportComponent implements OnInit {
       this.toastr.error(e.message);
     }
   }
+
+
+  product_list: any
+  getProductList() {
+    try {
+      this.promiseService.get('product', 'api').then((res: any) => {
+        this.product_list = res;
+        console.log("productList", this.product_list);
+        // this._filterCategory('');  
+        this.filteredProductOptions = this.productFormControl.valueChanges
+          .pipe(
+            startWith(''),
+            map(value => this._filterProduct(value))
+          );
+
+      }, err => {
+        this.toastr.error(err.message)
+      });
+    } catch (e) {
+      this.toastr.error(e.message);
+    }
+  }
+
+  private _filterProduct(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    // console.log('value', filterValue);
+    if (this.product_list) {
+      if (value.length > 0)
+        return this.product_list.map(e => e.productName).filter(option => option.toLowerCase().includes(filterValue));
+      else {
+        // console.log("else");
+        return this.product_list.map(e => e.productName)
+      }
+    }
+    // console.log("category list", this.category_list);
+  }
+
+
   toggleChange() {
     try {
       console.log("change");

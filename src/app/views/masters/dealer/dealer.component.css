@@ -1,0 +1,58 @@
+.mat-table__wrapper .mat-table {
+    min-width: auto !important;
+    width: 100% !important;
+}
+
+.mat-header-row {
+    width: 100%;
+}
+
+.mat-row {
+    width: 100%;
+}
+
+.mat-column-dealerAddress {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+    max-width: 200px !important;
+}
+
+.mat-column-SrNo {
+    flex: 0 0 25% !important;
+    min-width: 70px !important;
+    max-width: 200px !important;
+}
+
+.mat-column-dealerContactPerson {
+    flex: 0 0 25% !important;
+    min-width: 70px !important;
+    max-width: 200px !important;
+}
+.mat-column-dealerEmail {
+    flex: 0 0 25% !important;
+    min-width: 100px !important;
+    max-width: 200px !important;
+}
+.mat-column-dealerCity {
+    flex: 0 0 25% !important;
+    min-width: 70px !important;
+    max-width: 200px !important;
+}
+
+.mat-column-dealerAgencyName {
+    flex: 0 0 25% !important;
+    min-width: 100px !important;
+    max-width: 200px !important;
+    margin-left: 10px !important;
+}
+.mat-column-dealerMobileNumber {
+    flex: 0 0 25% !important;
+    min-width: 100px !important;
+    max-width: 200px !important;
+}
+.mat-column-dealerPinCode {
+    flex: 0 0 25% !important;
+    min-width: 70px !important;
+    text-align: center;
+    max-width: 200px !important;
+}

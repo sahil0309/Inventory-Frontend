@@ -10,32 +10,32 @@ import { switchMap } from 'rxjs/operators';
 
 import { DatePipe } from '@angular/common'
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
-import { AppDateAdapter, APP_DATE_FORMATS } from '../../global/adapters/date.adapter';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../../global/adapters/date.adapter';
 
-import { SnackbarService } from '../../services/snackbar.service';
-import { DataService } from '../../services/data.service';
-import { HttpService } from '../../services/http.service';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { DataService } from '../../../services/data.service';
+import { HttpService } from '../../../services/http.service';
 import { ToastrService } from 'ngx-toastr';
-import { AppConfigService } from '../../services/app-config.service';
+import { AppConfigService } from '../../../services/app-config.service';
 import { PromiseService } from 'src/app/services/promise.service';
 
-const ELEMENT_DATA: any[] = [];
-
-
+const ELEMENT_DATA = [];
 @Component({
-  selector: 'app-purchase-dashboard',
-  templateUrl: './purchase-dashboard.component.html',
-  styleUrls: ['./purchase-dashboard.component.css']
+  selector: 'app-dealer',
+  templateUrl: './dealer.component.html',
+  styleUrls: ['./dealer.component.css']
 })
-export class PurchaseDashboardComponent implements OnInit {
+
+export class DealerComponent implements OnInit {
 
   showTable: boolean = false;
-  displayedColumns: string[] = ['SrNo', 'productName', 'categoryName', 'dealerContactPerson', 'quantityPurchased', 'purchaseTimeStamp', 'costPrice','Action'];
+
+  displayedColumns: any[] = ['SrNo', 'dealerContactPerson', 'dealerAddress', 'dealerCity', 'dealerEmail', 'dealerAgencyName', 'dealerMobileNumber', 'dealerPhoneNumber', 'dealerPinCode', 'Action'];
   // displayedColumnsWithAction:string[]=['Product_Id', 'Product_Name', 'Category_name', 'Quantity', 'Date', 'Cost_Price', 'Selling_Price','Action'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private httpService: HttpService,
     private formBuilder: FormBuilder,
@@ -51,34 +51,28 @@ export class PurchaseDashboardComponent implements OnInit {
 
   ngOnInit() {
     try {
-
-      this.getStockList();
+      this.getdealerList();
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
       this.toastr.error(e.message);
     }
   }
 
-  ngAfterViewInit() {
-  }
-
-  list_sales_details: any;
-  stock_list: any;
-  getStockList() {
+  dealerList: any;
+  getdealerList() {
     try {
-
-      this.promiseService.get('stock', 'api').then((res: any) => {
-        this.stock_list = res;
-        console.log(this.stock_list);
-        this.dataSource = new MatTableDataSource(this.stock_list);
+      this.promiseService.get("dealer", "api").then((res: any) => {
+        console.log(res);
+        // console.log(this.displayedColumns);
+        this.dealerList = res;
+        this.dataSource = new MatTableDataSource(this.dealerList);
+        console.log(this.dataSource);
         this.showTable = true;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
       }, (err) => {
         this.toastr.error(err.message);
-      });
+      })
+
+
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
       this.toastr.error(e.message);
     }
   }
@@ -86,18 +80,17 @@ export class PurchaseDashboardComponent implements OnInit {
   onEdit(item) {
     try {
       console.log(item);
-      this.router.navigate(["edit-stock", item.stockId, { template: 'Edit' }]);
+      this.router.navigate(["edit-dealer", item.dealerId, { template: 'Edit' }]); 
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
-
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
       this.toastr.error(e.message);
+      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
     }
   }
   onAdd(item) {
     try {
-      console.log(item);
-      this.router.navigate(["add-stock", { template: 'Add' }]);
+      // console.log(item);
+      this.router.navigate(["add-dealer", { template: 'Add' }]);
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
     } catch (e) {
       // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');

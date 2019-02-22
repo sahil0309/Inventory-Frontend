@@ -19,6 +19,8 @@ import { PurchaseDashboardComponent } from './views/purchase-dashboard/purchase-
 import { PurchaseReportComponent } from './views/purchase-report/purchase-report.component';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
 import { AddStockComponent } from './views/purchase-dashboard/add-stock/add-stock.component';
+import { DealerComponent } from './views/masters/dealer/dealer.component';
+import { AddDealerComponent } from './views/masters/dealer/add-dealer/add-dealer.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: LoginComponent, pathMatch: "full" },
@@ -37,6 +39,10 @@ const routes: Routes = [
 
   { path: 'add-category', component: AddCategoryComponent },
   { path: 'edit-category/:id', component: AddCategoryComponent },
+
+  { path: 'dealer-list', component: DealerComponent },
+  { path: 'add-dealer', component: AddDealerComponent },
+  { path: 'edit-dealer/:id', component: AddDealerComponent },
 
   { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
