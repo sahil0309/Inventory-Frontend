@@ -39,63 +39,6 @@
 
   <br />
 
-  <!-- <div class="jumbotron"> -->
-    <div class="row w-100">
-      <div class="col-md-3 col-6">
-        <div class="card border-info mx-sm-1 p-3">
-          <!-- <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span> -->
-          <!-- </div> -->
-          <div class="text-info text-center mt-3">
-            <h4>Cars</h4>
-          </div>
-          <div class="text-info text-center mt-2">
-            <h1>234</h1>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-6">
-        <div class="card border-success mx-sm-1 p-3">
-          <!-- <div class="card border-success shadow text-success p-3 my-card">
-            <span class="fa fa-eye" aria-hidden="true"></span></div> -->
-          <div class="text-success text-center mt-3">
-            <h4>Eyes</h4>
-          </div>
-          <div class="text-success text-center mt-2">
-            <h1>9332</h1>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-6 mt-2 mt-sm-0">
-        <div class="card border-danger mx-sm-1 p-3">
-          <!-- <div class="card border-danger shadow text-danger p-3 my-card">
-            <span class="fa fa-heart" aria-hidden="true"></span></div> -->
-          <div class="text-danger text-center mt-3">
-            <h4>Hearts</h4>
-          </div>
-          <div class="text-danger text-center mt-2">
-            <h1>346</h1>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-6 mt-2 mt-sm-0">
-        <div class="card border-warning mx-sm-1 p-3">
-            <!-- <div class="ml-0">
-                Left
-            </div> -->
-          <div class="text-warning text-center mt-3">
-            <h4>Inbox</h4>
-          </div>
-          <div class="text-warning text-center mt-2">
-            <h1>346</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  <!-- </div> -->
-
-
   <div class="row">
     <div class="col-sm-6" *ngFor="let item of list_sales">
       <div class="card mt-3 mb-2 bg-white rounded">
@@ -107,12 +50,19 @@
           </div>
 
           <div class="row mt-2">
-            <div class="col-sm-8 product-info-col">
+            <div class="col-sm-7 product-info-col">
               <p> {{item.dealerName}} </p>
+              <p> <i class="fas fa-mobile-alt"></i>&nbsp;&nbsp;9999999999 / 8888888888 / 5555555555 </p>
               <p> {{item.sellingDate | date: 'dd-MMM-yyyy'}}</p>
             </div>
-            <div class="col-sm-4">
-              <p> {{item.soldQuantity}} * {{item.sellingPrice}}  = <span>Total: {{item.totalAmount}}</span> </p>
+            <div class="col-sm-5">
+              <p>
+                <strong>{{item.soldQuantity}}</strong>&nbsp;<span class="text-muted">items,</span>
+                &nbsp;
+                <strong>{{item.sellingPrice}}</strong>&nbsp;<span class="text-muted">each</span>
+              </p>
+              <p> Total: &nbsp;<strong>&#x20b9; &nbsp;{{item.totalAmount}}</strong><p>
+              <p> Paid: &nbsp;<strong>&#x20b9; &nbsp;{{item.paidAmount}}</strong> &nbsp;&nbsp; <span *ngIf="item.dueAmount > 0" class="text-danger">Due: &nbsp;<strong>&#x20b9; &nbsp;{{item.dueAmount}}</strong></span><p>
             </div>
           </div>
         </div>
@@ -121,3 +71,49 @@
   </div>
 
 </div>
+
+
+<!-- <div class="row w-100">
+  <div class="col-md-3 col-6">
+    <div class="card border-info mx-sm-1 p-3">
+      <div class="text-info text-center mt-3">
+        <h4>Cars</h4>
+      </div>
+      <div class="text-info text-center mt-2">
+        <h1>234</h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card border-success mx-sm-1 p-3">
+      <div class="text-success text-center mt-3">
+        <h4>Eyes</h4>
+      </div>
+      <div class="text-success text-center mt-2">
+        <h1>9332</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-6 mt-2 mt-sm-0">
+    <div class="card border-danger mx-sm-1 p-3">
+      <div class="text-danger text-center mt-3">
+        <h4>Hearts</h4>
+      </div>
+      <div class="text-danger text-center mt-2">
+        <h1>346</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-6 mt-2 mt-sm-0">
+    <div class="card border-warning mx-sm-1 p-3">
+      <div class="text-warning text-center mt-3">
+        <h4>Inbox</h4>
+      </div>
+      <div class="text-warning text-center mt-2">
+        <h1>346</h1>
+      </div>
+    </div>
+  </div>
+</div> -->

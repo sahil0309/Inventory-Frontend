@@ -60,6 +60,11 @@
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
               </div>
+              <div class="col-sm-6" *ngIf="totalCost > 0">
+                <div class="total-cost-area">
+                  <span>To be paid</span> &nbsp;&nbsp;&nbsp; <strong>{{totalCost}}</strong>
+                </div>
+              </div>
             </div>
           </div>
           <!--
@@ -78,9 +83,8 @@
               <div class="col-6 col-sm-6">
                 <!-- <button type="button" mat-raised-button class="btn btn-block col-sm-2 mr-3" (click)="ngOnInit()">RESET</button> -->
                 <button type="button" mat-raised-button (click)="Back()"
-                  class="btn btn-block col-2 col-sm-2 ">Back</button>
-              </div>
-              <div class="col-6 col-sm-6">
+                  class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
+
                 <button type="submit" mat-raised-button class="btn btn-block offset-4 col-2 col-sm-2"
                   color="primary">SAVE</button>
               </div>

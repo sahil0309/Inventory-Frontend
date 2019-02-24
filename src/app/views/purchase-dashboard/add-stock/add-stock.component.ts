@@ -55,11 +55,17 @@ export class AddStockComponent implements OnInit {
   filteredProductOptions: Observable<string[]>;
 
   ngOnInit() {
+
+    try{
+
+    }catch(e){
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
     // this.getCategoryList();
     this.getProductList();
     this.getDealerList();
-    this.resetObjstockForm();
-    this.bindstockForm();
+    this.resetobjStockForm();
+    this.bindStockForm();
 
     this.route.params.subscribe(params => {
       this.stockId = +params["id"];
@@ -71,9 +77,44 @@ export class AddStockComponent implements OnInit {
       }
       else {
         this.templateType = "Add Stock";
-        this.bindstockForm();
+        this.bindStockForm();
       }
+
+      this.onChanges();
     });
+  }
+
+  totalCost: number = 0;
+  onChanges(): void {
+    try{
+
+      this.stockForm.get('costPrice').valueChanges.subscribe(val => {
+        console.log('costPriceVal', val);
+        this.calculateTotalCost(this.stockForm.value.quantityPurchased, val);
+      });
+
+      this.stockForm.get('quantityPurchased').valueChanges.subscribe(val => {
+        console.log('quantityVal', val);
+        this.calculateTotalCost(val, this.stockForm.value.costPrice);
+      });
+
+    }catch(e){
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+  calculateTotalCost(quantityValue: number = 0, costPriceValue: number = 0){
+    try{
+      if((quantityValue && quantityValue > 0) && costPriceValue && costPriceValue > 0){
+        this.totalCost = quantityValue * costPriceValue;
+        console.log('this.totalCost', this.totalCost);
+      }else{
+        this.totalCost = 0;
+        console.log('this.totalCost', this.totalCost);
+      }
+    }catch(e){
+
+    }
   }
 
   dealer_list: any;
@@ -147,9 +188,9 @@ export class AddStockComponent implements OnInit {
     // console.log("category list", this.category_list);
   }
 
-  ObjstockForm: any = [];
-  resetObjstockForm() {
-    this.ObjstockForm = {
+  objStockForm: any = [];
+  resetobjStockForm() {
+    this.objStockForm = {
       productId: null,
       costPrice: null,
       purchaseTimeStamp: null,
@@ -159,16 +200,16 @@ export class AddStockComponent implements OnInit {
     }
   }
 
-  bindstockForm() {
+  bindStockForm() {
     try {
       this.stockForm = this.formBuilder.group({
-        productId: [this.ObjstockForm.productId],
-        costPrice: [this.ObjstockForm.costPrice],
-        // sellingPrice: [this.ObjstockForm.sellingPrice],
-        purchaseTimeStamp: [this.ObjstockForm.purchaseTimeStamp],
-        dealerId: [this.ObjstockForm.dealerId],
-        quantityPurchased: [this.ObjstockForm.quantityPurchased],
-        stockId: [this.ObjstockForm.stockId]
+        productId: [this.objStockForm.productId],
+        costPrice: [this.objStockForm.costPrice],
+        // sellingPrice: [this.objStockForm.sellingPrice],
+        purchaseTimeStamp: [this.objStockForm.purchaseTimeStamp],
+        dealerId: [this.objStockForm.dealerId],
+        quantityPurchased: [this.objStockForm.quantityPurchased],
+        stockId: [this.objStockForm.stockId]
       });
     } catch (e) {
       this.toastr.error(e.message);
@@ -180,7 +221,7 @@ export class AddStockComponent implements OnInit {
       let url = "stock/" + this.stockId;
       this.promiseService.get(url, 'api').then((res: any) => {
         res.purchaseTimeStamp = new Date(res.purchaseTimeStamp);
-        this.ObjstockForm = res;
+        this.objStockForm = res;
         if (this.product_list) {
           let productObj = this.product_list.filter(e => e.productId == res.productId)[0];
           this.productFormControl.patchValue(productObj.productName);
@@ -190,7 +231,7 @@ export class AddStockComponent implements OnInit {
           this.dealerFormControl.patchValue(dealerObj.dealerAgencyName.concat('(', dealerObj.dealerUserName, ')'));
         }
         console.log("byId", res);
-        this.bindstockForm();
+        this.bindStockForm();
       }, (err) => {
         this.toastr.error(err.statusText);
       })
