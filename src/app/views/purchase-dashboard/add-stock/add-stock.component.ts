@@ -82,7 +82,7 @@ export class AddStockComponent implements OnInit {
       this.promiseService.get('dealer', 'api').then((res: any) => {
         this.dealer_list = res;
         console.log("categoryList", this.dealer_list);
-        // this._filterCategory('');  
+        // this._filterCategory('');
         this.filteredDealerOptions = this.dealerFormControl.valueChanges
           .pipe(
             startWith(''),
@@ -103,7 +103,7 @@ export class AddStockComponent implements OnInit {
       this.promiseService.get('product', 'api').then((res: any) => {
         this.product_list = res;
         console.log("productList", this.product_list);
-        // this._filterCategory('');  
+        // this._filterCategory('');
         this.filteredProductOptions = this.productFormControl.valueChanges
           .pipe(
             startWith(''),
@@ -209,7 +209,7 @@ export class AddStockComponent implements OnInit {
       // console.log(moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD"), "Moment");
       // console.log(moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD h:mm:ss A"), "Moment Date Time")
       // let date1 = this.stockForm.value.purchaseTimeStamp.setHours(this.stockForm.value.purchaseTimeStamp.getHours() + 6);
-      let date = moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD");
+      let date = moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD HH:mm:ss");
       // console.log();
       let productObj = this.product_list.filter(e => e.productName === this.productFormControl.value)[0];
 

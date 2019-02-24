@@ -66,7 +66,7 @@ export class MaterialComponent implements OnInit {
     try {
       this.promiseService.get('category', 'api').then((res: any) => {
         this.category_list = res;
-        console.log(res);
+        // console.log(res);
       }, err => {
         this.toastr.error(err.message)
       });
@@ -81,15 +81,14 @@ export class MaterialComponent implements OnInit {
     try {
       this.promiseService.get('product', 'api').then((res: any) => {
         this.product_list = res;
-        console.log(res);
+        // console.log(res);
         if (this.category_list) {
           this.product_list.forEach(element => {
             let categoryObj = this.category_list.filter(e => e.categoryId == element.categoryId)[0];
             element.categoryName = categoryObj.categoryName;
-            console.log(categoryObj);
+            // console.log(categoryObj);
           });
-          console.log("list",this.product_list);
-          
+          // console.log(this.product_list);
           this.dataSource = new MatTableDataSource(this.product_list);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -102,7 +101,7 @@ export class MaterialComponent implements OnInit {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
-  
+
 
   onEdit(item) {
     try {

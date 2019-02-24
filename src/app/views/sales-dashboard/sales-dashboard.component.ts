@@ -46,6 +46,8 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
     try {
 
       this.getSalesDetails();
+
+      this.getListSales();
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
@@ -58,6 +60,43 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
         return typeof value === "string" ? value.toLowerCase() : value;
       };
     } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+  list_sales: any = [];
+  getListSales(){
+    try{
+      this.list_sales = [{
+        id: 1,
+        productId: 1,
+        productName: 'Ambuja Cement',
+        categoryId: 1,
+        categoryName: 'Cement',
+        dealerId: 1,
+        dealerName: 'Sai Datta Enterprises',
+        soldQuantity: 20,
+        sellingPrice: 400,
+        totalAmount: 8000,
+        paidAmount: 7000,
+        dueAmount: 1000,
+        sellingDate: new Date()
+      },{
+        id: 1,
+        productId: 1,
+        productName: 'Ambuja Cement',
+        categoryId: 1,
+        categoryName: 'Cement',
+        dealerId: 1,
+        dealerName: 'Sai Datta Enterprises',
+        soldQuantity: 5,
+        sellingPrice: 450,
+        totalAmount: 2250,
+        paidAmount: 2250,
+        dueAmount: 0,
+        sellingDate: new Date()
+      }];
+    }catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
@@ -166,4 +205,4 @@ export class SalesDashboardComponent implements OnInit, AfterViewInit {
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-} 
+}

@@ -14,9 +14,9 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   get(url: string, type: string) {
-    console.log(type);
+    // console.log(type);
     let urlValue = (type == "api") ? (this.baseNodeUrl + url) : (type == 'user') ? this.baseUrl.concat(url) : '';
-    console.log("urlvalue", urlValue);
+    // console.log("urlvalue", urlValue);
     return this.http.get(urlValue);
   }
 

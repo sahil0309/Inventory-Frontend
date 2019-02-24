@@ -68,7 +68,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.dataSource.sort = this.sort;
       }, (err) => {
         console.log('Error',err);
-        this.toastr.error(err.message)
+        this.snackbarService.openSnackBar(err.message, 'Close', 'error-snackbar');
       });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -99,4 +99,3 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
-

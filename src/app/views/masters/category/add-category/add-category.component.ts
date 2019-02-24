@@ -68,10 +68,10 @@ export class AddCategoryComponent implements OnInit {
         this.ObjCategoryForm = res;
         this.bindCategoryForm();
       }, (err) => {
-        this.toastr.error(err);
+        this.snackbarService.openSnackBar(err, 'Close', 'error-snackbar');
       })
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
@@ -88,7 +88,7 @@ export class AddCategoryComponent implements OnInit {
         categoryName: [this.ObjCategoryForm.categoryName]
       });
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
@@ -100,7 +100,7 @@ export class AddCategoryComponent implements OnInit {
         this.promiseService.post('category', 'api', this.categoryForm.value).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
-            this.toastr.success(res.message);
+            this.snackbarService.openSnackBar(res.message, 'Close', 'success-snackbar');
             this.router.navigate(["category"]);
           }
           else
@@ -117,7 +117,7 @@ export class AddCategoryComponent implements OnInit {
         this.promiseService.put('category', 'api', data).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
-            this.toastr.success(res.message);
+            this.snackbarService.openSnackBar(res.message, 'Close', 'success-snackbar');
             this.router.navigate(["category"]);
           }
           else
@@ -128,7 +128,7 @@ export class AddCategoryComponent implements OnInit {
       }
     }
     catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
@@ -136,7 +136,7 @@ export class AddCategoryComponent implements OnInit {
     try {
       this.router.navigate(["category"]);
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 

@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { DatePipe } from '@angular/common'
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
 import { AppDateAdapter, APP_DATE_FORMATS } from '../../../../global/adapters/date.adapter';
@@ -38,33 +39,38 @@ export class AddMaterialComponent implements OnInit {
     private appConfigService: AppConfigService,
     private toastr: ToastrService,
     private promiseService: PromiseService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog
+  ) { }
 
   productId: number;
   template: string;
-  templateType: string;
+  action: string;
   productForm: FormGroup;
   categoryFormControl = new FormControl();
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
-    this.getCategoryList();
-    this.resetObjProductForm();
-    this.bindProductForm();
+    try{
+      this.getCategoryList();
+      this.resetobjProductForm();
+      this.bindProductForm();
 
-    this.route.params.subscribe(params => {
-      this.productId = +params["id"];
-      this.template = params["template"];
-      // console.log(this.productId, this.template);
-      if (this.template == 'Edit') {
-        this.templateType = "Edit Product";
-        this.getProductDetailsById();
-      }
-      else {
-        this.templateType = "Add Product";
-        this.bindProductForm();
-      }
-    });
+      this.route.params.subscribe(params => {
+        this.productId = +params["id"];
+        this.template = params["template"];
+        // console.log(this.productId, this.template);
+        if (this.template == 'Edit') {
+          this.action = "edit";
+          this.getProductDetailsById();
+        }
+        else {
+          this.action = "add";
+          this.bindProductForm();
+        }
+      });
+    }catch(e){
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
   }
 
   category_list: any;
@@ -72,7 +78,7 @@ export class AddMaterialComponent implements OnInit {
     try {
       this.promiseService.get('category', 'api').then((res: any) => {
         this.category_list = res;
-        console.log("categoryList", this.category_list);
+        // console.log("categoryList", this.category_list);
         // this._filterCategory('');
         this.filteredOptions = this.categoryFormControl.valueChanges
           .pipe(
@@ -84,7 +90,27 @@ export class AddMaterialComponent implements OnInit {
         this.toastr.error(err.message)
       });
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+  onCategorySelection(event: MatAutocompleteSelectedEvent){
+    try{
+      console.log(event.option);
+
+      let data = this.category_list.filter(item => item.categoryName.trim().toLowerCase() == event.option.value.trim().toLowerCase());
+      // console.log('data', data);
+
+      if(data && data.length > 0){
+        this.productForm.patchValue({
+          categoryId: data[0].categoryId,
+          categoryName: data[0].categoryName,
+        })
+      }
+
+
+    }catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
@@ -102,84 +128,99 @@ export class AddMaterialComponent implements OnInit {
     // console.log("category list", this.category_list);
   }
 
-  ObjProductForm: any = [];
-  resetObjProductForm() {
-    this.ObjProductForm = {
+  objProductForm: any = [];
+  resetobjProductForm() {
+    this.objProductForm = {
+      productId: 0,
       productName: null,
-      categoryId: null
+      categoryId: null,
+      categoryName: null
     }
   }
 
   bindProductForm() {
     try {
       this.productForm = this.formBuilder.group({
-        productName: [this.ObjProductForm.productName],
-        categoryId: [this.ObjProductForm.categoryId]
+        productId: [this.objProductForm.productId, Validators.required],
+        productName: [this.objProductForm.productName, Validators.required],
+        categoryId: [this.objProductForm.categoryId, Validators.required],
+        categoryName: [this.objProductForm.categoryName, Validators.required],
       });
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
   getProductDetailsById() {
     try {
+
       let url = "product/" + this.productId;
+
       this.promiseService.get(url, 'api').then((res: any) => {
-        this.ObjProductForm = res;
-        console.log(res);
-        let categoryObj = this.category_list.filter(e => e.categoryId == res.categoryId)[0];
-        this.categoryFormControl.patchValue(categoryObj.categoryName);
+        this.objProductForm = res;
+
+        // console.log('this.objProductForm', this.objProductForm);
+
+        let categoryObj = this.category_list.filter(e => e.categoryId == res.categoryId);
+        // console.log('categoryObj', categoryObj);
+
+        if(categoryObj && categoryObj.length > 0){
+          this.objProductForm.categoryName = categoryObj[0].categoryName
+        }
+
+        // this.categoryFormControl.patchValue(categoryObj.categoryName);
+
         this.bindProductForm();
       }, (err) => {
-        this.toastr.error(err.statusText);
+        this.snackbarService.openSnackBar(err.statusText, 'Close', 'error-snackbar');
       })
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
   save() {
     try {
-      console.log(this.categoryFormControl.value);
-      let categoryObj = this.category_list.filter(e => e.categoryName === this.categoryFormControl.value)[0];
-      this.productForm.patchValue({
-        categoryId: categoryObj.categoryId
-      });
-      console.log(this.productForm.value);
 
-      if (this.templateType !== "Edit Product") {
+      console.log('this.productForm.value', this.productForm.value);
+
+      if (this.action !== "edit") {
+
         this.promiseService.post('product', 'api', this.productForm.value).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
-            this.toastr.success(res.message);
+            this.snackbarService.openSnackBar(res.message, 'Close', 'success-snackbar');
             this.router.navigate(["material"]);
           }
-          else
-            this.toastr.error(res.message);
+          else{
+            this.snackbarService.openSnackBar(res.message, 'Close', 'error-snackbar');
+          }
         }, (err) => {
           console.log(err);
         });
+
       }
       else {
-        let data = {
-          categoryId: this.productForm.value.categoryId,
-          productName: this.productForm.value.productName,
-          productId: this.productId
-        }
+
+        let data = this.productForm.value;
+
         this.promiseService.put('product', 'api', data).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
-            this.toastr.success(res.message);
+            this.snackbarService.openSnackBar(res.message, 'Close', 'success-snackbar');
             this.router.navigate(["material"]);
           }
-          else
-            this.toastr.error(res.message);
+          else{
+            // this.toastr.error(res.message);
+            this.snackbarService.openSnackBar(res.message, 'Close', 'error-snackbar');
+          }
         }, (err) => {
           console.log(err);
+          this.snackbarService.openSnackBar(err, 'Close', 'error-snackbar');
         });
       }
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
@@ -187,7 +228,7 @@ export class AddMaterialComponent implements OnInit {
     try {
       this.router.navigate(["material"]);
     } catch (e) {
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 

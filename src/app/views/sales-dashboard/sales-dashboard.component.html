@@ -84,7 +84,7 @@
             <!-- <div class="ml-0">
                 Left
             </div> -->
-          <div class="text-warning text-center mt-3"> 
+          <div class="text-warning text-center mt-3">
             <h4>Inbox</h4>
           </div>
           <div class="text-warning text-center mt-2">
@@ -93,6 +93,31 @@
         </div>
       </div>
     </div>
-  <!-- </div> --> 
+  <!-- </div> -->
+
+
+  <div class="row">
+    <div class="col-sm-6" *ngFor="let item of list_sales">
+      <div class="card mt-3 mb-2 bg-white rounded">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <h6>{{item.productName}} &bull; <small class="text-muted">{{item.categoryName}}</small></h6>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-sm-8 product-info-col">
+              <p> {{item.dealerName}} </p>
+              <p> {{item.sellingDate | date: 'dd-MMM-yyyy'}}</p>
+            </div>
+            <div class="col-sm-4">
+              <p> {{item.soldQuantity}} * {{item.sellingPrice}}  = <span>Total: {{item.totalAmount}}</span> </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

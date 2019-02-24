@@ -39,11 +39,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     try{
-      console.log('In header component');
+      // console.log('In header component');
       this.userInfo = this.authService.getUserInfo();
-      console.log('this.userInfo', this.userInfo);
+      // console.log('this.userInfo', this.userInfo);
       this.isLoggedIn$ = this.authService.isLoggedIn;
-      console.log('this.isLoggedIn$', this.isLoggedIn$);
+      // console.log('this.isLoggedIn$', this.isLoggedIn$);
     }catch(e){
       this.toastr.error(e.message);
     }
