@@ -21,6 +21,7 @@ import { SelectivePreloadingStrategyService } from './selective-preloading-strat
 import { AddStockComponent } from './views/purchase-dashboard/add-stock/add-stock.component';
 import { DealerComponent } from './views/masters/dealer/dealer.component';
 import { AddDealerComponent } from './views/masters/dealer/add-dealer/add-dealer.component';
+import { BillComponent } from './views/bill/bill.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: LoginComponent, pathMatch: "full" },
@@ -47,9 +48,9 @@ const routes: Routes = [
   { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'purchase-report', component: PurchaseReportComponent },
+  { path: 'bill', component: BillComponent },
 
   { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
-
   { path: '**', component: LoginComponent }
 ];
 

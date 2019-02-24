@@ -50,7 +50,7 @@ export class AddMaterialComponent implements OnInit {
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
-    try{
+    try {
       this.getCategoryList();
       this.resetobjProductForm();
       this.bindProductForm();
@@ -68,7 +68,7 @@ export class AddMaterialComponent implements OnInit {
           this.bindProductForm();
         }
       });
-    }catch(e){
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
@@ -94,14 +94,14 @@ export class AddMaterialComponent implements OnInit {
     }
   }
 
-  onCategorySelection(event: MatAutocompleteSelectedEvent){
-    try{
+  onCategorySelection(event: MatAutocompleteSelectedEvent) {
+    try {
       console.log(event.option);
 
       let data = this.category_list.filter(item => item.categoryName.trim().toLowerCase() == event.option.value.trim().toLowerCase());
       // console.log('data', data);
 
-      if(data && data.length > 0){
+      if (data && data.length > 0) {
         this.productForm.patchValue({
           categoryId: data[0].categoryId,
           categoryName: data[0].categoryName,
@@ -109,7 +109,7 @@ export class AddMaterialComponent implements OnInit {
       }
 
 
-    }catch (e) {
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
@@ -164,7 +164,7 @@ export class AddMaterialComponent implements OnInit {
         let categoryObj = this.category_list.filter(e => e.categoryId == res.categoryId);
         // console.log('categoryObj', categoryObj);
 
-        if(categoryObj && categoryObj.length > 0){
+        if (categoryObj && categoryObj.length > 0) {
           this.objProductForm.categoryName = categoryObj[0].categoryName
         }
 
@@ -179,6 +179,9 @@ export class AddMaterialComponent implements OnInit {
     }
   }
 
+  get f() {
+    return this.productForm.controls;
+  }
   save() {
     try {
 
@@ -192,7 +195,7 @@ export class AddMaterialComponent implements OnInit {
             this.snackbarService.openSnackBar(res.message, 'Close', 'success-snackbar');
             this.router.navigate(["material"]);
           }
-          else{
+          else {
             this.snackbarService.openSnackBar(res.message, 'Close', 'error-snackbar');
           }
         }, (err) => {
@@ -210,7 +213,7 @@ export class AddMaterialComponent implements OnInit {
             this.snackbarService.openSnackBar(res.message, 'Close', 'success-snackbar');
             this.router.navigate(["material"]);
           }
-          else{
+          else {
             // this.toastr.error(res.message);
             this.snackbarService.openSnackBar(res.message, 'Close', 'error-snackbar');
           }

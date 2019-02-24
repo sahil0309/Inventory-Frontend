@@ -14,6 +14,10 @@
                 <mat-form-field class="example-full-width">
                   <input matInput formControlName="categoryName" placeholder="Category Name">
                 </mat-form-field>
+                <mat-error *ngIf="f.categoryName.hasError('required') && f.categoryName.touched">Category Name is
+                  Required
+                </mat-error>
+                <mat-error *ngIf="f.categoryName.touched && f.categoryName.hasError('pattern')">Category Name Must be in String</mat-error>
               </div>
             </div>
           </div>
@@ -21,8 +25,10 @@
           <div class="form-group">
             <div class="row">
               <div class="col-6 col-sm-6">
-                <button type="button" mat-raised-button (click)='Back()' class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
-                <button type="submit" mat-raised-button class="btn btn-block offset-4 col-2 col-sm-2" color="primary">Save</button>
+                <button type="button" mat-raised-button (click)='Back()'
+                  class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
+                <button type="submit" mat-raised-button class="btn btn-block offset-4 col-2 col-sm-2" color="primary"
+                  [disabled]="!categoryForm.valid">Save</button>
               </div>
             </div>
           </div>

@@ -85,7 +85,7 @@ export class AddCategoryComponent implements OnInit {
   bindCategoryForm() {
     try {
       this.categoryForm = this.formBuilder.group({
-        categoryName: [this.ObjCategoryForm.categoryName]
+        categoryName: [this.ObjCategoryForm.categoryName, [Validators.required, Validators.pattern('[a-zA-Z\s]+$')]]
       });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -110,9 +110,9 @@ export class AddCategoryComponent implements OnInit {
         });
       }
       else {
-        let data={
-          categoryId:this.categoryId,
-          categoryName:this.categoryForm.value.categoryName
+        let data = {
+          categoryId: this.categoryId,
+          categoryName: this.categoryForm.value.categoryName
         }
         this.promiseService.put('category', 'api', data).then((res: any) => {
           console.log("res", res);
@@ -140,5 +140,8 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
+  get f() {
+    return this.categoryForm.controls;
+  }
 
 }

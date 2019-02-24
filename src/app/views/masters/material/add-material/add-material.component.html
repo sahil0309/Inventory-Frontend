@@ -14,6 +14,9 @@
                 <mat-form-field class="example-full-width">
                   <input matInput formControlName="productName" placeholder="Product Name">
                 </mat-form-field>
+                <mat-error *ngIf="f.productName.hasError('required') && f.productName.touched">Product Name is
+                    Required
+                  </mat-error>
               </div>
             </div>
           </div>
@@ -34,6 +37,7 @@
             </div>
           </div>
           <br />
+
           <div class="form-group">
             <div class="row">
               <div class="col-sm-12">
