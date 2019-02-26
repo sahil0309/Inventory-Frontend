@@ -54,8 +54,8 @@ export class PurchaseDashboardComponent implements OnInit {
 
       this.getStockList();
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+      // this.toastr.error(e.message);
     }
   }
 
@@ -67,7 +67,7 @@ export class PurchaseDashboardComponent implements OnInit {
   getStockList() {
     try {
 
-      this.promiseService.get('stock', 'api').then((res: any) => {
+      this.promiseService.get('purchase', 'api').then((res: any) => {
         this.stock_list = res;
         console.log(this.stock_list);
         this.dataSource = new MatTableDataSource(this.stock_list);
@@ -86,7 +86,7 @@ export class PurchaseDashboardComponent implements OnInit {
   onEdit(item) {
     try {
       console.log(item);
-      this.router.navigate(["edit-stock", item.stockId, { template: 'Edit' }]);
+      this.router.navigate(["edit-stock", item.purchaseId, { template: 'Edit' }]);
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
 
     } catch (e) {

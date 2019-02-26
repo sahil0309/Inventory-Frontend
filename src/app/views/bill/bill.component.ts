@@ -142,7 +142,7 @@ export class BillComponent implements OnInit {
       if (item.sellingPrice !== null && item.quantitySold !== null && item.sellingPrice.length > 0 && item.quantitySold > 0) {
         // console.log(typeof (+item.sellingPrice));
         item.totalSellingPrice = (+item.sellingPrice) * (+item.quantitySold);
-        this.billTotal += item.totalSellingPrice;
+        this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
         console.log(item.totalSellingPrice);
       }
     } catch (e) {

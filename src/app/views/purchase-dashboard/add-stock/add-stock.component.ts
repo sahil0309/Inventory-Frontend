@@ -43,7 +43,7 @@ export class AddStockComponent implements OnInit {
     private promiseService: PromiseService,
     public dialog: MatDialog) { }
 
-  stockId: number;
+  purchaseId: number;
   template: string;
   templateType: string;
   stockForm: FormGroup;
@@ -68,12 +68,12 @@ export class AddStockComponent implements OnInit {
     this.bindStockForm();
 
     this.route.params.subscribe(params => {
-      this.stockId = +params["id"];
+      this.purchaseId = +params["id"];
       this.template = params["template"];
       // console.log(this.productId, this.template);
       if (this.template == 'Edit') {
         this.templateType = "Edit Stock";
-        this.getStockDetailsById();
+        this.getPurchaseDetailsById();
       }
       else {
         this.templateType = "Add Stock";
@@ -196,7 +196,7 @@ export class AddStockComponent implements OnInit {
       purchaseTimeStamp: null,
       quantityPurchased: null,
       dealerId: 1,
-      stockId: null
+      purchaseId: null
     }
   }
 
@@ -209,16 +209,16 @@ export class AddStockComponent implements OnInit {
         purchaseTimeStamp: [this.objStockForm.purchaseTimeStamp],
         dealerId: [this.objStockForm.dealerId],
         quantityPurchased: [this.objStockForm.quantityPurchased],
-        stockId: [this.objStockForm.stockId]
+        purchaseId: [this.objStockForm.purchaseId]
       });
     } catch (e) {
       this.toastr.error(e.message);
     }
   }
 
-  getStockDetailsById() {
+  getPurchaseDetailsById() {
     try {
-      let url = "stock/" + this.stockId;
+      let url = "purchase/" + this.purchaseId;
       this.promiseService.get(url, 'api').then((res: any) => {
         res.purchaseTimeStamp = new Date(res.purchaseTimeStamp);
         this.objStockForm = res;
@@ -267,7 +267,7 @@ export class AddStockComponent implements OnInit {
       console.log(this.stockForm.value);
 
       if (this.templateType !== "Edit Stock") {
-        this.promiseService.post('stock', 'api', this.stockForm.value).then((res: any) => {
+        this.promiseService.post('purchase', 'api', this.stockForm.value).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
             this.toastr.success(res.message);
@@ -280,7 +280,7 @@ export class AddStockComponent implements OnInit {
         });
       }
       else {
-        this.promiseService.put('stock', 'api', this.stockForm.value).then((res: any) => {
+        this.promiseService.put('purchase', 'api', this.stockForm.value).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
             this.toastr.success(res.message);
