@@ -105,7 +105,7 @@ export class BillComponent implements OnInit {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
-
+  
   userBalance: any;
   showBalance: boolean = false;
   onSelection() {
