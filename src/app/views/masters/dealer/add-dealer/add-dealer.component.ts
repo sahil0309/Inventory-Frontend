@@ -53,6 +53,7 @@ export class AddDealerComponent implements OnInit {
     try {
       this.resetObjDealerForm();
       this.bindDealerForm();
+      this.getDealerTypeList();
 
       this.route.params.subscribe(params => {
         this.dealerId = +params["id"];
@@ -72,12 +73,35 @@ export class AddDealerComponent implements OnInit {
     }
   }
 
+  dealerTypes: any = [];
+  getDealerTypeList() {
+    try {
+      this.dealerTypes = [
+        {
+          id: 1,
+          name: "Customer"
+        },
+        {
+          id: 2,
+          name: "Dealer"
+        },
+        {
+          id: 3,
+          name: "Company"
+        }
+      ];
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
   objDealerForm: any = [];
   resetObjDealerForm() {
     this.objDealerForm = {
       createdBy: null,
       createdOn: null,
       dealerAddress: null,
+      dealerType: null,
       dealerAgencyName: null,
       dealerCity: null,
       dealerContactPerson: null,
@@ -110,6 +134,7 @@ export class AddDealerComponent implements OnInit {
         dealerPhoneNumber: this.objDealerForm.dealerPhoneNumber,
         dealerPinCode: this.objDealerForm.dealerPinCode,
         dealerUserName: this.objDealerForm.dealerUserName,
+        dealerType: this.objDealerForm.dealerType,
         isActive: this.objDealerForm.isActive,
         reason: this.objDealerForm.reason,
         updatedBy: this.objDealerForm.updatedBy,

@@ -97,8 +97,10 @@ export class BillComponent implements OnInit {
   onDelete(iProduct) {
     try {
       console.log(iProduct);
-      this.billTotal -= this.billObj.products[iProduct].totalSellingPrice;
+      // this.billTotal -= this.billObj.products[iProduct].totalSellingPrice;
       this.billObj.products.splice(iProduct, 1);
+      this.calculateBilltotal();
+      console.log(this.billObj);
 
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -142,9 +144,21 @@ export class BillComponent implements OnInit {
       if (item.sellingPrice !== null && item.quantitySold !== null && item.sellingPrice.length > 0 && item.quantitySold > 0) {
         // console.log(typeof (+item.sellingPrice));
         item.totalSellingPrice = (+item.sellingPrice) * (+item.quantitySold);
-        this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
+        // this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
+        this.calculateBilltotal();
         console.log(item.totalSellingPrice);
       }
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+  calculateBilltotal() {
+    try {
+      this.billTotal = 0;
+      this.billObj.products.forEach(element => {
+        this.billTotal += element.totalSellingPrice;
+      });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }

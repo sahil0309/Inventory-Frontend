@@ -62,7 +62,7 @@ export class PurchaseReportComponent implements OnInit {
       this.promiseService.get('stockReport', 'api').then((res: any) => {
         this.stock_list = res;
         console.log(this.stock_list);
-      }, (err) => {
+      }, (err) => { 
         this.toastr.error(err.message);
       })
       // this.stock_list = [{

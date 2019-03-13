@@ -52,7 +52,7 @@ export class PurchaseDashboardComponent implements OnInit {
   ngOnInit() {
     try {
 
-      this.getStockList();
+      this.getPurchaseList();
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
       // this.toastr.error(e.message);
@@ -63,14 +63,14 @@ export class PurchaseDashboardComponent implements OnInit {
   }
 
   list_sales_details: any;
-  stock_list: any;
-  getStockList() {
+  purchase_list: any;
+  getPurchaseList() {
     try {
 
       this.promiseService.get('purchase', 'api').then((res: any) => {
-        this.stock_list = res;
-        console.log(this.stock_list);
-        this.dataSource = new MatTableDataSource(this.stock_list);
+        this.purchase_list = res;
+        console.log(this.purchase_list);
+        this.dataSource = new MatTableDataSource(this.purchase_list);
         this.showTable = true;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

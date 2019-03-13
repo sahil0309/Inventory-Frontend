@@ -46,7 +46,7 @@ export class AddStockComponent implements OnInit {
   purchaseId: number;
   template: string;
   templateType: string;
-  stockForm: FormGroup;
+  purchaseForm: FormGroup;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dealerFormControl = new FormControl();
@@ -64,8 +64,8 @@ export class AddStockComponent implements OnInit {
     // this.getCategoryList();
     this.getProductList();
     this.getDealerList();
-    this.resetobjStockForm();
-    this.bindStockForm();
+    this.resetobjPurchaseForm();
+    this.bindPurchaseForm();
 
     this.route.params.subscribe(params => {
       this.purchaseId = +params["id"];
@@ -77,7 +77,7 @@ export class AddStockComponent implements OnInit {
       }
       else {
         this.templateType = "Add Stock";
-        this.bindStockForm();
+        this.bindPurchaseForm();
       }
 
       this.onChanges();
@@ -88,14 +88,14 @@ export class AddStockComponent implements OnInit {
   onChanges(): void {
     try{
 
-      this.stockForm.get('costPrice').valueChanges.subscribe(val => {
+      this.purchaseForm.get('costPrice').valueChanges.subscribe(val => {
         console.log('costPriceVal', val);
-        this.calculateTotalCost(this.stockForm.value.quantityPurchased, val);
+        this.calculateTotalCost(this.purchaseForm.value.quantityPurchased, val);
       });
 
-      this.stockForm.get('quantityPurchased').valueChanges.subscribe(val => {
+      this.purchaseForm.get('quantityPurchased').valueChanges.subscribe(val => {
         console.log('quantityVal', val);
-        this.calculateTotalCost(val, this.stockForm.value.costPrice);
+        this.calculateTotalCost(val, this.purchaseForm.value.costPrice);
       });
 
     }catch(e){
@@ -188,9 +188,9 @@ export class AddStockComponent implements OnInit {
     // console.log("category list", this.category_list);
   }
 
-  objStockForm: any = [];
-  resetobjStockForm() {
-    this.objStockForm = {
+  objPurchaseForm: any = [];
+  resetobjPurchaseForm() {
+    this.objPurchaseForm = {
       productId: null,
       costPrice: null,
       purchaseTimeStamp: null,
@@ -200,16 +200,16 @@ export class AddStockComponent implements OnInit {
     }
   }
 
-  bindStockForm() {
+  bindPurchaseForm() {
     try {
-      this.stockForm = this.formBuilder.group({
-        productId: [this.objStockForm.productId],
-        costPrice: [this.objStockForm.costPrice],
-        // sellingPrice: [this.objStockForm.sellingPrice],
-        purchaseTimeStamp: [this.objStockForm.purchaseTimeStamp],
-        dealerId: [this.objStockForm.dealerId],
-        quantityPurchased: [this.objStockForm.quantityPurchased],
-        purchaseId: [this.objStockForm.purchaseId]
+      this.purchaseForm = this.formBuilder.group({
+        productId: [this.objPurchaseForm.productId],
+        costPrice: [this.objPurchaseForm.costPrice],
+        // sellingPrice: [this.objPurchaseForm.sellingPrice],
+        purchaseTimeStamp: [this.objPurchaseForm.purchaseTimeStamp],
+        dealerId: [this.objPurchaseForm.dealerId],
+        quantityPurchased: [this.objPurchaseForm.quantityPurchased],
+        purchaseId: [this.objPurchaseForm.purchaseId]
       });
     } catch (e) {
       this.toastr.error(e.message);
@@ -221,7 +221,7 @@ export class AddStockComponent implements OnInit {
       let url = "purchase/" + this.purchaseId;
       this.promiseService.get(url, 'api').then((res: any) => {
         res.purchaseTimeStamp = new Date(res.purchaseTimeStamp);
-        this.objStockForm = res;
+        this.objPurchaseForm = res;
         if (this.product_list) {
           let productObj = this.product_list.filter(e => e.productId == res.productId)[0];
           this.productFormControl.patchValue(productObj.productName);
@@ -231,7 +231,7 @@ export class AddStockComponent implements OnInit {
           this.dealerFormControl.patchValue(dealerObj.dealerAgencyName.concat('(', dealerObj.dealerUserName, ')'));
         }
         console.log("byId", res);
-        this.bindStockForm();
+        this.bindPurchaseForm();
       }, (err) => {
         this.toastr.error(err.statusText);
       })
@@ -242,15 +242,15 @@ export class AddStockComponent implements OnInit {
 
   save() {
     try {
-      console.log(this.stockForm.value.purchaseTimeStamp);
+      console.log(this.purchaseForm.value.purchaseTimeStamp);
       let options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
-      // console.log(this.stockForm.value.purchaseTimeStamp.toLocaleDateString("en-IN"), "Locale");
-      // console.log(this.stockForm.value.purchaseTimeStamp.toISOString().split('T')[0]);
-      // console.log(this.stockForm.value.purchaseTimeStamp.toUTCString());
-      // console.log(moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD"), "Moment");
-      // console.log(moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD h:mm:ss A"), "Moment Date Time")
-      // let date1 = this.stockForm.value.purchaseTimeStamp.setHours(this.stockForm.value.purchaseTimeStamp.getHours() + 6);
-      let date = moment(this.stockForm.value.purchaseTimeStamp).format("YYYY-MM-DD HH:mm:ss");
+      // console.log(this.purchaseForm.value.purchaseTimeStamp.toLocaleDateString("en-IN"), "Locale");
+      // console.log(this.purchaseForm.value.purchaseTimeStamp.toISOString().split('T')[0]);
+      // console.log(this.purchaseForm.value.purchaseTimeStamp.toUTCString());
+      // console.log(moment(this.purchaseForm.value.purchaseTimeStamp).format("YYYY-MM-DD"), "Moment");
+      // console.log(moment(this.purchaseForm.value.purchaseTimeStamp).format("YYYY-MM-DD h:mm:ss A"), "Moment Date Time")
+      // let date1 = this.purchaseForm.value.purchaseTimeStamp.setHours(this.purchaseForm.value.purchaseTimeStamp.getHours() + 6);
+      let date = moment(this.purchaseForm.value.purchaseTimeStamp).format("YYYY-MM-DD HH:mm:ss");
       // console.log();
       let productObj = this.product_list.filter(e => e.productName === this.productFormControl.value)[0];
 
@@ -259,15 +259,15 @@ export class AddStockComponent implements OnInit {
 
       let dealerObj = this.dealer_list.filter(e => e.dealerUserName == dealerUsername)[0];
 
-      this.stockForm.patchValue({
+      this.purchaseForm.patchValue({
         productId: productObj.productId,
         purchaseTimeStamp: date,
         dealerId: dealerObj.dealerId
       });
-      console.log(this.stockForm.value);
+      console.log(this.purchaseForm.value);
 
       if (this.templateType !== "Edit Stock") {
-        this.promiseService.post('purchase', 'api', this.stockForm.value).then((res: any) => {
+        this.promiseService.post('purchase', 'api', this.purchaseForm.value).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
             this.toastr.success(res.message);
@@ -280,7 +280,7 @@ export class AddStockComponent implements OnInit {
         });
       }
       else {
-        this.promiseService.put('purchase', 'api', this.stockForm.value).then((res: any) => {
+        this.promiseService.put('purchase', 'api', this.purchaseForm.value).then((res: any) => {
           console.log("res", res);
           if (res.status !== 'error') {
             this.toastr.success(res.message);

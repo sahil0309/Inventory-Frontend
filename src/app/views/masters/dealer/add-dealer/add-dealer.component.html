@@ -27,19 +27,32 @@
 
           <div class="form-group">
             <div class="row">
-              <div class="col-12 col-sm-12">
+              <div class="col-6 col-sm-6">
                 <mat-form-field class="example-full-width">
                   <input matInput formControlName="dealerEmail" placeholder="Email">
                 </mat-form-field>
               </div>
+
+
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <mat-select placeholder="Type" formControlName="dealerType">
+                    <mat-option *ngFor="let dealer of dealerTypes ; let i = index" [value]="dealer.id">
+                      {{dealer.name|titlecase}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" *ngIf="dealerForm.value.dealerType > 1">
             <div class="row">
               <div class="col-12 col-sm-12">
                 <mat-form-field class="example-full-width">
                   <input matInput formControlName="dealerAgencyName" placeholder="Agency Name">
+                  <!-- {{dealerForm.value.dealerType|json}} -->
                 </mat-form-field>
               </div>
             </div>
@@ -73,7 +86,7 @@
           <div class="row">
             <div class=" col-10 col-sm-8">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Dealer landline number" formControlName="dealerPhoneNumber">
+                <input matInput placeholder="Landline Number" formControlName="dealerPhoneNumber">
                 <mat-hint>Valid formats: 000-1234-5678 / 00012345678 / 000.1234.5678</mat-hint>
               </mat-form-field>
             </div>
@@ -101,7 +114,7 @@
           <div class="row">
             <div class="col-10 col-sm-8">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Dealer Mobile number" formControlName="dealerMobileNumber">
+                <input matInput placeholder="Mobile Number" formControlName="dealerMobileNumber">
                 <!-- <mat-hint>Valid formats: 000-1234-5678 / 00012345678 / 000.1234.5678</mat-hint> -->
               </mat-form-field>
             </div>

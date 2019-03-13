@@ -27,13 +27,6 @@
         View All
       </mat-slide-toggle>
     </div>
-    <!-- <div class="col-6 col-sm-5">
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Purchase Date" [(ngModel)]="dateOfPurchase">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-    </div> -->
     <div class="col-6 col-sm-2">
       <button mat-flat-button color="primary" type="button" matTooltip="Search" (click)="SearchStock()"
         class="float-right">Search</button>
@@ -41,54 +34,6 @@
   </div>
 
 
-  <!-- <div class="col-sm-3 col-6">
-      <div class="card border-info mx-sm-1 p-3">
-        <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span>
-        </div>
-        <div class="text-info text-center mt-3">
-          <h5>Selling Price</h5>
-        </div>
-        <div class="text-info text-center mt-2">
-          <h1>{{sellingPrice}}</h1>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-3 col-6">
-      <div class="card border-info mx-sm-1 p-3">
-        <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span>
-        </div>
-        <div class="text-info text-center mt-3">
-          <h5>Total Stock</h5>
-        </div>
-        <div class="text-info text-center mt-2">
-          <h1>{{totalStock}}</h1>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-3 col-6 mt-2 mt-sm-0">
-      <div class="card border-info mx-sm-1 p-3">
-        <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span>
-        </div>
-        <div class="text-info text-center mt-3">
-          <h5>Product Name</h5>
-        </div>
-        <div class="text-info text-center mt-2">
-          <h1>{{productName1}}</h1>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-3 col-6 mt-2 mt-sm-0">
-      <div class="card border-info mx-sm-1 p-3">
-        <div class="card border-info shadow text-info p-3 my-card"><span class="fa fa-car" aria-hidden="true"></span> 
-         </div> 
-        <div class="text-info text-center mt-3">
-          <h5>Category Name</h5>
-        </div>
-        <div class="text-info text-center mt-2">
-          <h1>{{categoryName}}</h1>
-        </div>
-      </div>
-    </div> -->
   <div class="row mw-100 mt-4" *ngIf="showCards">
     <div class="col-12 col-md-6" *ngFor="let item of stockReportArray">
       <mat-card class="mb-3 ml-4 ">
@@ -96,7 +41,7 @@
           {{item.productName}} &bull; <small>({{item.categoryName}})</small>
         </h5>
         <p>
-          <span class="text-left">Availability: {{item.quantityAvailable}}/{{item.quantity}}</span>
+          <span class="text-left">Availability: {{item.quantityAvailable}}/{{item.quantityPurchased}}</span>
           <!-- <span class="text-right ml-1">Current selling price: {{item.sellingPrice}}</span> -->
         </p>
         <p>
