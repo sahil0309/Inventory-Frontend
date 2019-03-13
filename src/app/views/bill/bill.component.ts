@@ -101,7 +101,6 @@ export class BillComponent implements OnInit {
       this.billObj.products.splice(iProduct, 1);
       this.calculateBilltotal();
       console.log(this.billObj);
-
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
