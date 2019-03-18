@@ -49,6 +49,7 @@ export class AddMaterialComponent implements OnInit {
   categoryFormControl = new FormControl();
   filteredOptions: Observable<string[]>;
 
+  unitsOfMeasure: string[] = ['Kg', 'L']
   ngOnInit() {
     try {
       this.getCategoryList();
@@ -133,6 +134,11 @@ export class AddMaterialComponent implements OnInit {
     this.objProductForm = {
       productId: 0,
       productName: null,
+      unitOfMeasure: null,
+      variant: null,
+      cgstPercentage: null,
+      sgstPercentage: null,
+      igstPercentage: null,
       categoryId: null,
       categoryName: null
     }
@@ -145,6 +151,11 @@ export class AddMaterialComponent implements OnInit {
         productName: [this.objProductForm.productName, Validators.required],
         categoryId: [this.objProductForm.categoryId, Validators.required],
         categoryName: [this.objProductForm.categoryName, Validators.required],
+        variant: [this.objProductForm.variant, Validators.required],
+        unitOfMeasure: [this.objProductForm.unitOfMeasure, Validators.required],
+        cgstPercentage: [this.objProductForm.cgstPercentage],
+        igstPercentage: [this.objProductForm.igstPercentage],
+        sgstPercentage: [this.objProductForm.sgstPercentage]
       });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');

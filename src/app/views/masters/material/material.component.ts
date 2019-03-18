@@ -81,7 +81,7 @@ export class MaterialComponent implements OnInit {
     try {
       this.promiseService.get('product', 'api').then((res: any) => {
         this.product_list = res;
-        // console.log(res);
+        console.log(res);
         if (this.category_list) {
           this.product_list.forEach(element => {
             let categoryObj = this.category_list.filter(e => e.categoryId == element.categoryId)[0];

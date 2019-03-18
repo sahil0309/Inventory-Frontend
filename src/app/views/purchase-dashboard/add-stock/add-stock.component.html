@@ -10,10 +10,66 @@
 
           <div class="form-group">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-6 col-sm-6">
                 <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Product Name" aria-label="Number" matInput
-                    [formControl]="productFormControl" [matAutocomplete]="auto1">
+                  <input type="text" placeholder="Agency Name" aria-label="Number" matInput [formControl]="dealerFormControl"
+                    [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredDealerOptions | async" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="col-6 col-sm-6">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" formControlName="purchaseTimeStamp" placeholder="Purchase Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4 col-sm-4">
+                <mat-form-field>
+                  <mat-select placeholder="Payment Mode" formControlName="modeOfPayment">
+                    <mat-option *ngFor="let item of modeOfPayments" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-sm-4">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Vehicle Number" formControlName="vehicleNumber">
+                  <mat-hint>Format:MH 01 AB 1234</mat-hint>
+                  <mat-error *ngIf="f.vehicleNumber.touched && f.vehicleNumber.errors?.required">Vehicle Number Is
+                    Required </mat-error>
+                  <mat-error *ngIf="f.vehicleNumber.touched && f.vehicleNumber.errors?.pattern">Enter In Format: MH 01
+                    AB 1234
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-sm-4">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Labour Charges" type="number" formControlName="labourCharges">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Product Name" aria-label="Number" matInput [formControl]="productFormControl"
+                    [matAutocomplete]="auto1">
                   <mat-autocomplete #auto1="matAutocomplete">
                     <mat-option *ngFor="let option of filteredProductOptions | async" [value]="option">
                       {{option}}
@@ -22,84 +78,66 @@
                 </mat-form-field>
               </div>
 
-              <div class="col-sm-6">
-                <mat-form-field class="example-full-width">
-                  <input type="text" placeholder="Agency Name" aria-label="Number" matInput
-                    [formControl]="dealerFormControl" [matAutocomplete]="auto">
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredDealerOptions | async" [value]="option">
-                      {{option}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
+              <div class="col-2 col-sm-2 text-right mt-sm-2">
+                <h6 *ngIf="showQuantity">In Stock <strong>{{quantityInStock}}</strong></h6>
+              </div>
+
+
+              <div class="col-2 offset-sm-1 col-sm-2">
+                <button type="button" mat-raised-button class="btn btn-block" matTooltip="Add Product" color="primary"
+                  (click)="addProduct()">Add</button>
               </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <div class="row">
-              <div class="col-6 col-sm-6">
-                <mat-form-field class="example-full-width">
-                  <input matInput formControlName="costPrice" placeholder="Cost Price" type="number">
-                </mat-form-field>
+          <div class="form-group" formArrayName="products" *ngFor="let item of purchaseForm.get('products').controls; let iProduct=index">
+            <div [formGroupName]="iProduct">
+              <div class="row">
+                <div class="col-4 col-sm-4">
+                  <h6><b>{{products.controls[iProduct].controls.productName.value}}</b></h6>
+                </div>
               </div>
-              <div class="col-sm-6">
-                <mat-form-field class="example-full-width">
-                  <input matInput formControlName="quantityPurchased" placeholder="Quantity" type="number">
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="row">
-              <div class="col-sm-6">
-                <mat-form-field>
-                  <input matInput [matDatepicker]="picker" formControlName="purchaseTimeStamp" placeholder="Purchase Date">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-6" *ngIf="totalCost > 0">
-                <div class="total-cost-area">
-                  <span>To be paid</span> &nbsp;&nbsp;&nbsp; <strong>{{totalCost}}</strong>
+              <div class="row">
+                <div class="col-3 col-sm-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Cost Price" formControlName="costPrice" type="number" (focusout)="calculateTotalPrice(item)">
+                  </mat-form-field>
+                </div>
+                <div class="col-3 col-sm-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Enter Quantity" formControlName="quantityPurchased" type="number"
+                      (focusout)="calculateTotalPrice(item)">
+                  </mat-form-field>
+                </div>
+                <div class="col-3 col-sm-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Total" formControlName="totalPrice">
+                  </mat-form-field>
+                </div>
+                <div class="col-3 col-sm-3">
+                  <mat-icon (click)="onDelete(iProduct)" style="color: red;">clear</mat-icon>
                 </div>
               </div>
             </div>
           </div>
-          <!--
-          <div class="form-group">
-            <div class="row">
-              <div class="col-sm-6">
-                <mat-form-field class="example-full-width">
-                  <input matInput formControlName="productName" placeholder="Product Name">
-                </mat-form-field>
-              </div>
-            </div>
-          </div> -->
           <br />
           <div class="form-group">
             <div class="row">
-              <div class="col-6 col-sm-6">
-                <!-- <button type="button" mat-raised-button class="btn btn-block col-sm-2 mr-3" (click)="ngOnInit()">RESET</button> -->
-                <button type="button" mat-raised-button (click)="Back()"
-                  class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
-
-                <button type="submit" mat-raised-button class="btn btn-block offset-4 col-2 col-sm-2"
-                  color="primary">SAVE</button>
+              <div class="col-8 col-sm-6 mb-sm-0">
+                <button type="button" mat-raised-button (click)="Back()" class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
+                <button type="submit" mat-raised-button class="btn btn-block col-2 col-sm-2" color="primary">SAVE</button>
+              </div>
+              <div class="col-12 col-sm-6 text-right mt-2 mt-sm-0" *ngIf="billTotal > 0">
+                <div class="total-cost-area">
+                  <span class="spanClass">Raw Total<strong class="float-sm-right">{{billTotal}}</strong></span>
+                  <span class="spanClass">Total CGST<strong class="float-sm-right">{{totalCgst}}</strong></span>
+                  <span class="spanClass">Total SGST<strong class="float-sm-right">{{totalSgst}}</strong></span>
+                  <span class="spanClass">To Be Paid<strong class="float-sm-right">{{billTotal+totalCgst+totalSgst}}</strong></span>
+                </div>
               </div>
             </div>
           </div>
-
-          <!-- <div class="form-group">
-              <div class="row">
-                <div class="col-sm-8"></div>
-                <button type="button" class="btn btn-sm col-sm-2 btn-block" (click)="closeModal(userTemplate)">Close</button>
-                <button type="submit" class="btn btn-sm btn-primary col-sm-2 btn-block" [disabled]="!userForm.valid" (click)="saveUser()">Save</button>
-              </div>
-            </div> -->
         </form>
       </mat-card>
     </div>
   </div>
-</div>

@@ -93,6 +93,7 @@ export class BillComponent implements OnInit {
     }
   }
 
+  
 
   onDelete(iProduct) {
     try {
@@ -105,7 +106,7 @@ export class BillComponent implements OnInit {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
-  
+
   userBalance: any;
   showBalance: boolean = false;
   onSelection() {
@@ -187,7 +188,7 @@ export class BillComponent implements OnInit {
   stockList: any
   getStockList() {
     try {
-      this.promiseService.get('stockReport', 'api').then((res: any) => {
+      this.promiseService.get('product', 'api').then((res: any) => {
         this.stockList = res;
         console.log("stockList", this.stockList);
         // this._filterCategory('');  

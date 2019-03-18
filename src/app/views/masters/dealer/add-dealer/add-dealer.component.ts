@@ -147,7 +147,7 @@ export class AddDealerComponent implements OnInit {
 
   getDealerDetailsById() {
     try {
-      console.log(typeof (this.dealerId));
+      console.log(this.dealerId);
       let url = "dealer/" + this.dealerId;
       this.promiseService.get(url, "api").then((res: any) => {
         this.objDealerForm = res
@@ -157,6 +157,9 @@ export class AddDealerComponent implements OnInit {
           this.dealerMobileNumberList = this.objDealerForm.dealerMobileNumber.split(',');
           this.objDealerForm.dealerPhoneNumber = null;
           this.objDealerForm.dealerMobileNumber = null;
+          this.bindDealerForm();
+        }
+        else {
           this.bindDealerForm();
         }
       }).catch(err => this.toastr.error(err.message));
@@ -176,6 +179,9 @@ export class AddDealerComponent implements OnInit {
   save() {
     try {
 
+      if (this.dealerForm.value.dealerType == 'Customer') {
+        this.dealerForm.get('dealerAgencyName').setValue('');
+      }
       this.dealerForm.patchValue({
         dealerPhoneNumber: this.dealerLandlineNumberList ? this.dealerLandlineNumberList.join(", ") : null,
         dealerMobileNumber: this.dealerMobileNumberList ? this.dealerMobileNumberList.join(", ") : null

@@ -3,3 +3,10 @@
   background: lightgrey;
   text-align: justify;
 }
+
+.spanClass{
+/* text-align: right; */
+width: 230px;;
+display: block;
+margin-top: 2px;
+}

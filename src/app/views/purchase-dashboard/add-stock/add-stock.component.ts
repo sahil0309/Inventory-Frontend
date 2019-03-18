@@ -53,12 +53,12 @@ export class AddStockComponent implements OnInit {
   productFormControl = new FormControl();
   filteredDealerOptions: Observable<string[]>;
   filteredProductOptions: Observable<string[]>;
-
+  modeOfPayments: string[] = ["Cheque", "Cash", "Card"];
   ngOnInit() {
 
-    try{
+    try {
 
-    }catch(e){
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
     // this.getCategoryList();
@@ -79,41 +79,104 @@ export class AddStockComponent implements OnInit {
         this.templateType = "Add Stock";
         this.bindPurchaseForm();
       }
-
-      this.onChanges();
     });
   }
 
-  totalCost: number = 0;
-  onChanges(): void {
-    try{
 
-      this.purchaseForm.get('costPrice').valueChanges.subscribe(val => {
-        console.log('costPriceVal', val);
-        this.calculateTotalCost(this.purchaseForm.value.quantityPurchased, val);
+  createProduct(): FormGroup {
+    try {
+      let productObj = this.product_list.filter(e => e.productName == this.productFormControl.value)[0];
+      return this.formBuilder.group({
+        productId: productObj.productId,
+        productName: productObj.productName,
+        cgstPercentage: productObj.cgstPercentage,
+        sgstPercentage: productObj.sgstPercentage,
+        cgst: null,
+        sgst: null,
+        costPrice: null,
+        quantityPurchased: null,
+        totalPrice: null,
       });
-
-      this.purchaseForm.get('quantityPurchased').valueChanges.subscribe(val => {
-        console.log('quantityVal', val);
-        this.calculateTotalCost(val, this.purchaseForm.value.costPrice);
-      });
-
-    }catch(e){
+    } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
-  calculateTotalCost(quantityValue: number = 0, costPriceValue: number = 0){
-    try{
-      if((quantityValue && quantityValue > 0) && costPriceValue && costPriceValue > 0){
-        this.totalCost = quantityValue * costPriceValue;
-        console.log('this.totalCost', this.totalCost);
-      }else{
-        this.totalCost = 0;
-        console.log('this.totalCost', this.totalCost);
+  products: any = [];
+  addProduct() {
+    try {
+      // this.productFormControl.value
+      let productObj = this.product_list.filter(e => e.productName == this.productFormControl.value)[0];
+      let check = this.purchaseForm.value.products.map(e => e.productId).some(e => e == productObj.productId);
+      console.log(check);
+      if (!check) {
+        this.products = this.purchaseForm.get('products') as FormArray
+        this.products.push(this.createProduct());
+        console.log(this.products);
+        console.log(this.purchaseForm.value);
       }
-    }catch(e){
+      else
+        this.snackbarService.openSnackBar('Product Already Added in the list', 'Close', 'error-snackbar');
+      console.log(this.purchaseForm.value.products);
+      // newObj = null;
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
 
+  //calculating cgst and sgst values for a product added
+  calculateTotalPrice(item) {
+    try {
+
+      let costPrice = item.controls.costPrice.value;
+      let quantityPurchased = item.controls.quantityPurchased.value;
+      let cgstPercentage = item.controls.cgstPercentage.value;
+      let sgstPercentage = item.controls.sgstPercentage.value;
+      console.log(costPrice, quantityPurchased);
+      if (costPrice != null && quantityPurchased != null) {
+        item.controls.totalPrice.patchValue((costPrice) * (quantityPurchased));
+        item.controls.cgst.patchValue((costPrice * cgstPercentage * quantityPurchased) / 100);
+        item.controls.sgst.patchValue((costPrice * sgstPercentage * quantityPurchased) / 100);
+        this.calculateBilltotal();
+      }
+      console.log(this.purchaseForm.value);
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+
+  billTotal: number = 0;
+  totalCgst: number = 0;
+  totalSgst: number = 0;
+  calculateBilltotal() {
+    try {
+      this.billTotal = 0;
+      this.totalCgst = 0;
+      this.totalSgst = 0;
+      this.purchaseForm.value.products.forEach(element => {
+        this.billTotal += element.totalPrice;
+        this.totalSgst += element.cgst;
+        this.totalCgst += element.sgst;
+      });
+      this.purchaseForm.patchValue({
+        totalAmount: this.billTotal
+      });
+      console.log(this.purchaseForm.value);
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
+
+
+  onDelete(iProduct) {
+    try {
+      console.log(iProduct);
+      this.products.removeAt(iProduct);
+      console.log(this.purchaseForm.value.products);
+      this.calculateBilltotal();
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
@@ -129,7 +192,6 @@ export class AddStockComponent implements OnInit {
             startWith(''),
             map(value => this._filterDealer(value))
           );
-
       }, err => {
         this.toastr.error(err.message)
       });
@@ -150,7 +212,6 @@ export class AddStockComponent implements OnInit {
             startWith(''),
             map(value => this._filterProduct(value))
           );
-
       }, err => {
         this.toastr.error(err.message)
       });
@@ -191,26 +252,38 @@ export class AddStockComponent implements OnInit {
   objPurchaseForm: any = [];
   resetobjPurchaseForm() {
     this.objPurchaseForm = {
-      productId: null,
-      costPrice: null,
+      // productId: null,
+      // costPrice: null,
+      // quantityPurchased: null,
       purchaseTimeStamp: null,
-      quantityPurchased: null,
-      dealerId: 1,
-      purchaseId: null
+      products: [],
+      dealerId: null,
+      purchaseId: null,
+      vehicleNumber: null,
+      labourCharges: null,
+      modeOfPayment: null,
+      amountPaid: null,
+      totalAmount: null
     }
   }
 
   bindPurchaseForm() {
     try {
       this.purchaseForm = this.formBuilder.group({
-        productId: [this.objPurchaseForm.productId],
-        costPrice: [this.objPurchaseForm.costPrice],
+        // productId: [this.objPurchaseForm.productId],
+        // costPrice: [this.objPurchaseForm.costPrice],
         // sellingPrice: [this.objPurchaseForm.sellingPrice],
-        purchaseTimeStamp: [this.objPurchaseForm.purchaseTimeStamp],
+        purchaseTimeStamp: [this.objPurchaseForm.purchaseTimeStamp, Validators.required],
+        products: this.formBuilder.array([]),
         dealerId: [this.objPurchaseForm.dealerId],
-        quantityPurchased: [this.objPurchaseForm.quantityPurchased],
-        purchaseId: [this.objPurchaseForm.purchaseId]
+        purchaseId: [this.objPurchaseForm.purchaseId],
+        vehicleNumber: [this.objPurchaseForm.vehicleNumber, [Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{1,4}$'), Validators.required]],
+        labourCharges: [this.objPurchaseForm.labourCharges],
+        modeOfPayment: [this.objPurchaseForm.modeOfPayment],
+        amountPaid: [this.objPurchaseForm.amountPaid],
+        totalAmount: [this.objPurchaseForm.totalAmount]
       });
+
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -242,17 +315,7 @@ export class AddStockComponent implements OnInit {
 
   save() {
     try {
-      console.log(this.purchaseForm.value.purchaseTimeStamp);
-      let options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
-      // console.log(this.purchaseForm.value.purchaseTimeStamp.toLocaleDateString("en-IN"), "Locale");
-      // console.log(this.purchaseForm.value.purchaseTimeStamp.toISOString().split('T')[0]);
-      // console.log(this.purchaseForm.value.purchaseTimeStamp.toUTCString());
-      // console.log(moment(this.purchaseForm.value.purchaseTimeStamp).format("YYYY-MM-DD"), "Moment");
-      // console.log(moment(this.purchaseForm.value.purchaseTimeStamp).format("YYYY-MM-DD h:mm:ss A"), "Moment Date Time")
-      // let date1 = this.purchaseForm.value.purchaseTimeStamp.setHours(this.purchaseForm.value.purchaseTimeStamp.getHours() + 6);
       let date = moment(this.purchaseForm.value.purchaseTimeStamp).format("YYYY-MM-DD HH:mm:ss");
-      // console.log();
-      let productObj = this.product_list.filter(e => e.productName === this.productFormControl.value)[0];
 
       let dealerUsername = this.dealerFormControl.value.split('(')[1].split(')')[0];
       console.log(dealerUsername);
@@ -260,38 +323,37 @@ export class AddStockComponent implements OnInit {
       let dealerObj = this.dealer_list.filter(e => e.dealerUserName == dealerUsername)[0];
 
       this.purchaseForm.patchValue({
-        productId: productObj.productId,
         purchaseTimeStamp: date,
         dealerId: dealerObj.dealerId
       });
       console.log(this.purchaseForm.value);
 
-      if (this.templateType !== "Edit Stock") {
-        this.promiseService.post('purchase', 'api', this.purchaseForm.value).then((res: any) => {
-          console.log("res", res);
-          if (res.status !== 'error') {
-            this.toastr.success(res.message);
-            this.router.navigate(["purchase-dashboard"]);
-          }
-          else
-            this.toastr.error(res.message);
-        }, (err) => {
-          console.log(err);
-        });
-      }
-      else {
-        this.promiseService.put('purchase', 'api', this.purchaseForm.value).then((res: any) => {
-          console.log("res", res);
-          if (res.status !== 'error') {
-            this.toastr.success(res.message);
-            this.router.navigate(["purchase-dashboard"]);
-          }
-          else
-            this.toastr.error(res.message);
-        }, (err) => {
-          this.toastr.error(err.error);
-        });
-      }
+      // if (this.templateType !== "Edit Stock") {
+      //   this.promiseService.post('purchase', 'api', this.purchaseForm.value).then((res: any) => {
+      //     console.log("res", res);
+      //     if (res.status !== 'error') {
+      //       this.toastr.success(res.message);
+      //       this.router.navigate(["purchase-dashboard"]);
+      //     }
+      //     else
+      //       this.toastr.error(res.message);
+      //   }, (err) => {
+      //     console.log(err);
+      //   });
+      // }
+      // else {
+      //   this.promiseService.put('purchase', 'api', this.purchaseForm.value).then((res: any) => {
+      //     console.log("res", res);
+      //     if (res.status !== 'error') {
+      //       this.toastr.success(res.message);
+      //       this.router.navigate(["purchase-dashboard"]);
+      //     }
+      //     else
+      //       this.toastr.error(res.message);
+      //   }, (err) => {
+      //     this.toastr.error(err.error);
+      //   });
+      // }
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -303,6 +365,10 @@ export class AddStockComponent implements OnInit {
     } catch (e) {
       this.toastr.error(e.message);
     }
+  }
+
+  get f() {
+    return this.purchaseForm.controls;
   }
 
 
