@@ -328,32 +328,32 @@ export class AddStockComponent implements OnInit {
       });
       console.log(this.purchaseForm.value);
 
-      // if (this.templateType !== "Edit Stock") {
-      //   this.promiseService.post('purchase', 'api', this.purchaseForm.value).then((res: any) => {
-      //     console.log("res", res);
-      //     if (res.status !== 'error') {
-      //       this.toastr.success(res.message);
-      //       this.router.navigate(["purchase-dashboard"]);
-      //     }
-      //     else
-      //       this.toastr.error(res.message);
-      //   }, (err) => {
-      //     console.log(err);
-      //   });
-      // }
-      // else {
-      //   this.promiseService.put('purchase', 'api', this.purchaseForm.value).then((res: any) => {
-      //     console.log("res", res);
-      //     if (res.status !== 'error') {
-      //       this.toastr.success(res.message);
-      //       this.router.navigate(["purchase-dashboard"]);
-      //     }
-      //     else
-      //       this.toastr.error(res.message);
-      //   }, (err) => {
-      //     this.toastr.error(err.error);
-      //   });
-      // }
+      if (this.templateType !== "Edit Stock") {
+        this.promiseService.post('purchase', 'api', this.purchaseForm.value).then((res: any) => {
+          console.log("res", res);
+          if (res.status !== 'error') {
+            this.toastr.success(res.message);
+            this.router.navigate(["purchase-dashboard"]);
+          }
+          else
+            this.toastr.error(res.message);
+        }, (err) => {
+          console.log(err);
+        });
+      }
+      else {
+        this.promiseService.put('purchase', 'api', this.purchaseForm.value).then((res: any) => {
+          console.log("res", res);
+          if (res.status !== 'error') {
+            this.toastr.success(res.message);
+            this.router.navigate(["purchase-dashboard"]);
+          }
+          else
+            this.toastr.error(res.message);
+        }, (err) => {
+          this.toastr.error(err.error);
+        });
+      }
     } catch (e) {
       this.toastr.error(e.message);
     }
