@@ -19,7 +19,6 @@
 
   <br />
 
-
   <div class="table-container mat-elevation-z8" *ngIf="showTable">
     <table mat-table [dataSource]="dataSource" matSort>
 
@@ -28,34 +27,35 @@
         <td mat-cell *matCellDef="let element;let i=index;"> {{i+1}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="productName">
-        <th mat-header-cell *matHeaderCellDef>Product Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+      <ng-container matColumnDef="dealerName">
+        <th mat-header-cell *matHeaderCellDef>Dealer Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.dealerName}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="categoryName">
-        <th mat-header-cell *matHeaderCellDef>Category Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
+      <ng-container matColumnDef="vehicleNumber">
+        <th mat-header-cell *matHeaderCellDef> Vehicle Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.vehicleNumber}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="dealerContactPerson">
-        <th mat-header-cell *matHeaderCellDef> Dealer Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.dealerContactPerson}} </td>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Bill Amount</th>
+        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="quantityPurchased">
-        <th mat-header-cell *matHeaderCellDef>Quantity Purchased </th>
-        <td mat-cell *matCellDef="let element"> {{element.quantityPurchased}} </td>
+
+      <ng-container matColumnDef="netGst">
+        <th mat-header-cell *matHeaderCellDef>Total GST</th>
+        <td mat-cell *matCellDef="let element"> {{element.netGst}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="purchaseTimeStamp">
-        <th mat-header-cell *matHeaderCellDef> Purchase Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.purchaseTimeStamp | date:'dd-MM-yyyy'}} </td>
+      <ng-container matColumnDef="totalAmount">
+        <th mat-header-cell *matHeaderCellDef>Total Amount </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalAmount}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="costPrice">
-        <th mat-header-cell *matHeaderCellDef> Cost Price </th>
-        <td mat-cell *matCellDef="let element"> {{element.costPrice}} </td>
+      <ng-container matColumnDef="labourCharges">
+        <th mat-header-cell *matHeaderCellDef>labourCharges </th>
+        <td mat-cell *matCellDef="let element"> {{element.labourCharges}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Action">

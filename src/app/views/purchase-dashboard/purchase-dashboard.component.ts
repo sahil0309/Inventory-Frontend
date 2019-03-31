@@ -30,7 +30,7 @@ const ELEMENT_DATA: any[] = [];
 export class PurchaseDashboardComponent implements OnInit {
 
   showTable: boolean = false;
-  displayedColumns: string[] = ['SrNo', 'productName', 'categoryName', 'dealerContactPerson', 'quantityPurchased', 'purchaseTimeStamp', 'costPrice','Action'];
+  displayedColumns: string[] = ['SrNo', 'dealerName', 'vehicleNumber', 'amount', 'netGst', 'totalAmount', 'labourCharges', 'Action'];
   // displayedColumnsWithAction:string[]=['Product_Id', 'Product_Name', 'Category_name', 'Quantity', 'Date', 'Cost_Price', 'Selling_Price','Action'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
@@ -51,8 +51,7 @@ export class PurchaseDashboardComponent implements OnInit {
 
   ngOnInit() {
     try {
-
-      this.getPurchaseList();
+      this.getDealerList();
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
       // this.toastr.error(e.message);
@@ -69,17 +68,35 @@ export class PurchaseDashboardComponent implements OnInit {
 
       this.promiseService.get('purchase', 'api').then((res: any) => {
         this.purchase_list = res;
+        this.purchase_list.forEach(element => {
+          element.dealerName = this.dealer_list.filter(e => e.dealerId == element.dealerId)[0].dealerAgencyName
+        });
         console.log(this.purchase_list);
         this.dataSource = new MatTableDataSource(this.purchase_list);
         this.showTable = true;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }, (err) => {
-        this.toastr.error(err.message);
+        this.snackbarService.openSnackBar(err.message, 'Close', 'error-snackbar');
       });
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+      // this.toastr.error(e.message);
+    }
+  }
+
+  dealer_list: any;
+  getDealerList() {
+    try {
+      this.promiseService.get('dealer', 'api').then((res: any) => {
+        this.dealer_list = res;
+        this.getPurchaseList();
+        console.log("dealer list", this.dealer_list);
+      }, err => {
+        this.toastr.error(err.message)
+      });
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
     }
   }
 
@@ -90,18 +107,19 @@ export class PurchaseDashboardComponent implements OnInit {
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
 
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
+      // this.toastr.error(e.message);
     }
   }
+
   onAdd(item) {
     try {
       console.log(item);
       this.router.navigate(["add-stock", { template: 'Add' }]);
       // this.snackbarService.openSnackBar("edit", 'Close', 'error-snackback');
     } catch (e) {
-      // this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
-      this.toastr.error(e.message);
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackback');
+      // this.toastr.error(e.message);
     }
   }
 
