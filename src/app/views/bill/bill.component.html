@@ -3,7 +3,15 @@
   <div class="row">
     <div class="offset-sm-1 col-sm-10">
       <br />
-      <h5>Bill</h5>
+      <div class="row">
+        <div class="col-4 col-sm-4">
+          <h5>Bill</h5>
+        </div>
+        <div class="offset-2 col-6 offset-sm-6 col-sm-2">
+          <button type="button" mat-raised-button class="btn btn-block " (click)="generateBill()" color="primary">Print
+            Bill</button>
+        </div>
+      </div>
       <br />
       <mat-card>
         <!-- <form [formGroup]="stockForm" (ngSubmit)="save()"> -->
@@ -103,4 +111,25 @@
       </mat-card>
     </div>
   </div>
+</div>
+<div>
+  <table id="contentToConvert" style="position:fixed;top:-9999999px">
+    <tbody>
+      <tr>
+        <th>Column1</th>
+        <th>Column2</th>
+        <th>Column3</th>
+      </tr>
+      <tr>
+        <td>Row 1</td>
+        <td>Row 1</td>
+        <td>Row 1</td>
+      </tr>
+      <tr>
+        <td>Row 2</td>
+        <td>Row 2</td>
+        <td>Row 2</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

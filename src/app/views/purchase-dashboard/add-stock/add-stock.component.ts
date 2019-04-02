@@ -160,7 +160,8 @@ export class AddStockComponent implements OnInit {
         this.totalCgst += element.sgst;
       });
       this.purchaseForm.patchValue({
-        totalAmount: this.billTotal
+        totalAmount: this.billTotal,
+        netGST: this.totalCgst + this.totalSgst
       });
       console.log(this.purchaseForm.value);
     } catch (e) {
@@ -263,7 +264,8 @@ export class AddStockComponent implements OnInit {
       labourCharges: null,
       modeOfPayment: null,
       amountPaid: null,
-      totalAmount: null
+      totalAmount: null,
+      netGST: null
     }
   }
 
@@ -281,9 +283,33 @@ export class AddStockComponent implements OnInit {
         labourCharges: [this.objPurchaseForm.labourCharges],
         modeOfPayment: [this.objPurchaseForm.modeOfPayment],
         amountPaid: [this.objPurchaseForm.amountPaid],
-        totalAmount: [this.objPurchaseForm.totalAmount]
+        totalAmount: [this.objPurchaseForm.totalAmount],
+        netGST: [this.objPurchaseForm.netGST]
       });
+      this.products = this.purchaseForm.get('products') as FormArray
+      this.objPurchaseForm.products.forEach(productObj => {
+        this.products.push(this.bindProduct(productObj));
+      });
+      console.log(this.purchaseForm.value);
+      this.calculateBilltotal();
+    } catch (e) {
+      this.toastr.error(e.message);
+    }
+  }
 
+  bindProduct(product): FormGroup {
+    try {
+      return this.formBuilder.group({
+        productId: product.productId,
+        productName: product.productName,
+        cgstPercentage: product.cgstPercentage,
+        sgstPercentage: product.sgstPercentage,
+        cgst: product.cgst,
+        sgst: product.sgst,
+        costPrice: product.costPrice,
+        quantityPurchased: product.quantityPurchased,
+        totalPrice: product.totalPrice,
+      });
     } catch (e) {
       this.toastr.error(e.message);
     }
@@ -293,17 +319,18 @@ export class AddStockComponent implements OnInit {
     try {
       let url = "purchase/" + this.purchaseId;
       this.promiseService.get(url, 'api').then((res: any) => {
-        res.purchaseTimeStamp = new Date(res.purchaseTimeStamp);
+        // res.purchaseTimeStamp = new Date(res.purchaseTimeStamp);
+        console.log(res);
         this.objPurchaseForm = res;
-        if (this.product_list) {
-          let productObj = this.product_list.filter(e => e.productId == res.productId)[0];
-          this.productFormControl.patchValue(productObj.productName);
-        }
+        // if (this.product_list) {
+        //   let productObj = this.product_list.filter(e => e.productId == res.productId)[0];
+        //   this.productFormControl.patchValue(productObj.productName);
+        // }
         if (this.dealer_list) {
           let dealerObj = this.dealer_list.filter(e => e.dealerId == res.dealerId)[0];
           this.dealerFormControl.patchValue(dealerObj.dealerAgencyName.concat('(', dealerObj.dealerUserName, ')'));
         }
-        console.log("byId", res);
+        // console.log("byId", res);
         this.bindPurchaseForm();
       }, (err) => {
         this.toastr.error(err.statusText);

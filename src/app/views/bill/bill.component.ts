@@ -20,13 +20,15 @@ import { DataService } from '../../services/data.service';
 import { HttpService } from '../../services/http.service';
 import { PromiseService } from '../../services/promise.service'
 import { AppConfigService } from '../../services/app-config.service';
-
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas'
 
 @Component({
   selector: 'app-bill',
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css']
 })
+
 export class BillComponent implements OnInit {
 
   constructor(private httpService: HttpService,
@@ -92,8 +94,6 @@ export class BillComponent implements OnInit {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
-
-  
 
   onDelete(iProduct) {
     try {
@@ -264,4 +264,25 @@ export class BillComponent implements OnInit {
     // console.log("category list", this.category_list);
   }
 
+
+  generateBill() {
+    try {
+      var data = document.getElementById('contentToConvert');
+      html2canvas(data).then(canvas => {
+        // Few necessary setting options
+        var imgWidth = 208;
+        var pageHeight = 295;
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+
+        const contentDataURL = canvas.toDataURL('image/png')
+        let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+        var position = 0;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+        pdf.save('MYPdf.pdf'); // Generated PDF
+      });
+    } catch (e) {
+      this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
+    }
+  }
 }
