@@ -1,135 +1,269 @@
 <div class="container">
-
-  <div class="row">
-    <div class="offset-sm-1 col-sm-10">
-      <br />
-      <div class="row">
-        <div class="col-4 col-sm-4">
-          <h5>Bill</h5>
+  <form name="form" (ngSubmit)="f.form.valid && Pay()" #f="ngForm">
+    <div class="row">
+      <div class="offset-sm-2 col-sm-10">
+        <br />
+        <div class="row">
+          <div class="col-4 col-sm-4">
+            <h5>Bill</h5>
+          </div>
+          <div class="offset-4 col-2 offset-sm-5 col-sm-2">
+            <button type="button" mat-raised-button class="btn btn-block" (click)="generateBill()" color="primary">Print
+              Bill</button>
+          </div>
         </div>
-        <div class="offset-2 col-6 offset-sm-6 col-sm-2">
-          <button type="button" mat-raised-button class="btn btn-block " (click)="generateBill()" color="primary">Print
-            Bill</button>
+        <br />
+        <mat-card>
+          <!-- <form [formGroup]="stockForm" (ngSubmit)="save()"> -->
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Dealer Name" aria-label="Number" matInput
+                    [formControl]="customerFormControl" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelection()">
+                    <mat-option *ngFor="let option of filteredCustomerOptions | async" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="offset-2 col-4 offset-sm-3 col-sm-3" *ngIf="showBalance">
+                <span>Pending Balance: <strong>{{userBalance}}</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4 col-sm-4">
+                <mat-form-field>
+                  <mat-select placeholder="Payment Mode" name="modeOfPayment" [(ngModel)]="billObj.modeOfPayment"
+                    #modeOfPayment="ngModel" required>
+                    <mat-option *ngFor="let item of modeOfPayments" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="modeOfPayment.touched && modeOfPayment.errors?.required">Mode of Payment is
+                    Required </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-sm-4">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Vehicle Number" [(ngModel)]="billObj.vehicleNumber" name="Vehicle Number"
+                    #vehicleNumber="ngModel" required
+                    pattern="^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{1,4}$">
+                  <mat-hint>Format:MH 01 AB 1234</mat-hint>
+                  <mat-error *ngIf="vehicleNumber.touched && vehicleNumber.errors?.required">Vehicle Number is
+                    Required </mat-error>
+                  <mat-error *ngIf="vehicleNumber.touched && vehicleNumber.errors?.pattern">Enter In Format: MH 01
+                    AB 1234
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-sm-4">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Labour Charges" type="number" name="labourCharges"
+                    [(ngModel)]="billObj.labourCharges">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-6 col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Product Name" aria-label="Number" matInput
+                    [formControl]="productFormControl" [matAutocomplete]="auto1">
+                  <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onProductSelection()">
+                    <mat-option *ngFor="let option of filteredProductOptions | async" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-2 col-sm-2 text-right mt-sm-2">
+                <h6 *ngIf="showQuantity">In Stock <strong>{{quantityInStock}}</strong></h6>
+              </div>
+
+
+              <div class="col-2 offset-sm-1 col-sm-2 float-sm-right">
+                <button type="button" mat-raised-button class="btn btn-block" matTooltip="Add Product" color="primary"
+                  (click)="addProduct()">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngFor="let item of billObj.products; let iProduct=index">
+            <div class="row">
+              <div class="col-4 col-sm-4">
+                <h6><b>{{item.productName}}</b></h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3 col-sm-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Selling Price" name="Selling Price" [(ngModel)]="item.sellingPrice"
+                    type="number" (focusout)="calculateTotalPrice(item)" required>
+                </mat-form-field>
+              </div>
+              <div class="col-3 col-sm-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Enter Quantity" name="Quantity" [(ngModel)]="item.quantitySold"
+                    type="number" (focusout)="calculateTotalPrice(item)" required>
+                </mat-form-field>
+              </div>
+              <div class="col-3 col-sm-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Total" name="totalAmount" disabled [(ngModel)]="item.totalSellingPrice" required>
+                </mat-form-field>
+              </div>
+              <div class="col-3 col-sm-3">
+                <mat-icon (click)="onDelete(iProduct)" style="color: red;">clear</mat-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-8 col-sm-6 mb-sm-0">
+                <button type="button" mat-raised-button (click)="Reset()"
+                  class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
+                <button type="submit" [disabled]="!f.form.valid" mat-raised-button
+                  class="btn btn-block col-2 col-sm-2" color="primary">Pay</button>
+              </div>
+              <div class="col-12 col-sm-6 text-right mt-2 mt-sm-0" *ngIf="billTotal > 0">
+                <div class="total-cost-area">
+                  <span class="spanClass">Raw Total<strong class="float-sm-right">{{billTotal}}</strong></span>
+                  <span class="spanClass">Total CGST<strong class="float-sm-right">{{totalCgst}}</strong></span>
+                  <span class="spanClass">Total SGST<strong class="float-sm-right">{{totalSgst}}</strong></span>
+                  <span class="spanClass">To Be Paid<strong
+                      class="float-sm-right">{{billTotal+totalCgst+totalSgst}}</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+<div class="container" id="contentToConvert" style="position: fixed;top: -999999px;">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="invoice-title">
+        <h2>Invoice</h2>
+        <h3 class="pull-right">Order # 12345</h3>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-6">
+          <address>
+            <strong>Billed To:</strong><br>
+            John Smith<br>
+            1234 Main<br>
+            Apt. 4B<br>
+            Springfield, ST 54321
+          </address>
+        </div>
+        <div class="col-xs-6 text-right">
+          <address>
+            <strong>Shipped To:</strong><br>
+            Jane Smith<br>
+            1234 Main<br>
+            Apt. 4B<br>
+            Springfield, ST 54321
+          </address>
         </div>
       </div>
-      <br />
-      <mat-card>
-        <!-- <form [formGroup]="stockForm" (ngSubmit)="save()"> -->
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-6 col-sm-6">
-              <mat-form-field class="example-full-width">
-                <input type="text" placeholder="User Name" aria-label="Number" matInput
-                  [formControl]="customerFormControl" [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelection()">
-                  <mat-option *ngFor="let option of filteredCustomerOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </div>
-            <div class="offset-2 col-4 offset-sm-2 offset-col-3" *ngIf="showBalance">
-              <span>Pending Balance: <strong>{{userBalance}}</strong></span>
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <address>
+            <strong>Payment Method:</strong><br>
+            Visa ending **** 4242<br>
+            jsmith@email.com
+          </address>
         </div>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-6 col-sm-6">
-              <mat-form-field class="example-full-width">
-                <input type="text" placeholder="Product Name" aria-label="Number" matInput
-                  [formControl]="productFormControl" [matAutocomplete]="auto1">
-                <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onProductSelection()">
-                  <mat-option *ngFor="let option of filteredProductOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </div>
-
-
-            <div class="col-2 col-sm-2 text-right mt-sm-2">
-              <h6 *ngIf="showQuantity">In Stock <strong>{{quantityInStock}}</strong></h6>
-            </div>
-
-
-            <div class="col-2 offset-sm-2 col-sm-2">
-              <button type="button" mat-raised-button class="btn btn-block" matTooltip="Add Product" color="primary"
-                (click)="addProduct()">Add</button>
-            </div>
-          </div>
+        <div class="col-xs-6 text-right">
+          <address>
+            <strong>Order Date:</strong><br>
+            March 7, 2014<br><br>
+          </address>
         </div>
-
-        <div class="form-group" *ngFor="let item of billObj.products; let iProduct=index">
-          <div class="row">
-            <div class="col-4 col-sm-4">
-              <h6><b>{{item.productName}}</b></h6>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3 col-sm-3">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Selling Price" [(ngModel)]="item.sellingPrice"
-                  (focusout)="calculateTotalPrice(item)">
-              </mat-form-field>
-            </div>
-            <div class="col-3 col-sm-3">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Enter Quantity" [(ngModel)]="item.quantitySold"
-                  (focusout)="calculateTotalPrice(item)">
-              </mat-form-field>
-            </div>
-            <div class="col-3 col-sm-3">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Total" disabled [(ngModel)]="item.totalSellingPrice">
-              </mat-form-field>
-            </div>
-            <div class="col-3 col-sm-3">
-              <mat-icon (click)="onDelete(iProduct)" style="color: red;">clear</mat-icon>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-4 col-sm-4">
-              <!-- <button type="button" mat-raised-button class="btn btn-block col-sm-2 mr-3" (click)="ngOnInit()">RESET</button> -->
-              <button type="button" mat-raised-button (click)="Reset()" class="btn btn-block">Reset</button>
-            </div>
-            <div class="col-4 col-sm-4 text-right mt-sm-2">
-              <h6>Total: {{billTotal}}</h6>
-            </div>
-            <div class="col-2 offset-sm-2 col-sm-2">
-              <button type="button" mat-raised-button class="btn btn-block " (click)="Pay()"
-                color="primary">Pay</button>
-            </div>
-          </div>
-        </div>
-
-      </mat-card>
+      </div>
     </div>
   </div>
-</div>
-<div>
-  <table id="contentToConvert" style="position:fixed;top:-9999999px">
-    <tbody>
-      <tr>
-        <th>Column1</th>
-        <th>Column2</th>
-        <th>Column3</th>
-      </tr>
-      <tr>
-        <td>Row 1</td>
-        <td>Row 1</td>
-        <td>Row 1</td>
-      </tr>
-      <tr>
-        <td>Row 2</td>
-        <td>Row 2</td>
-        <td>Row 2</td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><strong>Order summary</strong></h3>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <td><strong>Item</strong></td>
+                  <td class="text-center"><strong>Price</strong></td>
+                  <td class="text-center"><strong>Quantity</strong></td>
+                  <td class="text-right"><strong>Totals</strong></td>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                <tr>
+                  <td>BS-200</td>
+                  <td class="text-center">$10.99</td>
+                  <td class="text-center">1</td>
+                  <td class="text-right">$10.99</td>
+                </tr>
+                <tr>
+                  <td>BS-400</td>
+                  <td class="text-center">$20.00</td>
+                  <td class="text-center">3</td>
+                  <td class="text-right">$60.00</td>
+                </tr>
+                <tr>
+                  <td>BS-1000</td>
+                  <td class="text-center">$600.00</td>
+                  <td class="text-center">1</td>
+                  <td class="text-right">$600.00</td>
+                </tr>
+                <tr>
+                  <td class="thick-line"></td>
+                  <td class="thick-line"></td>
+                  <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                  <td class="thick-line text-right">$670.99</td>
+                </tr>
+                <tr>
+                  <td class="no-line"></td>
+                  <td class="no-line"></td>
+                  <td class="no-line text-center"><strong>Shipping</strong></td>
+                  <td class="no-line text-right">$15</td>
+                </tr>
+                <tr>
+                  <td class="no-line"></td>
+                  <td class="no-line"></td>
+                  <td class="no-line text-center"><strong>Total</strong></td>
+                  <td class="no-line text-right">$685.99</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

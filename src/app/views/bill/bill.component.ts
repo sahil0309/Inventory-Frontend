@@ -47,7 +47,7 @@ export class BillComponent implements OnInit {
   customerFormControl = new FormControl();
   filteredProductOptions: Observable<string[]>
   filteredCustomerOptions: Observable<string[]>
-
+  modeOfPayments: string[] = ["Cheque", "Cash", "Card"];
   ngOnInit() {
     this.getStockList();
     this.getCustomerList();
@@ -58,10 +58,15 @@ export class BillComponent implements OnInit {
   resetObjBill() {
     try {
       this.billObj = {
-        userId: null,
+        dealerId: null,
         amountPaid: null,
         billDate: null,
-        products: []
+        modeOfPayment: null,
+        vehicleNumber: null,
+        labourCharges: null,
+        products: [],
+        totalAmount: null,
+        netGST: null
       }
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -74,14 +79,20 @@ export class BillComponent implements OnInit {
       // this.productFormControl.value
       let productObj = this.stockList.filter(e => e.productName == this.productFormControl.value)[0];
       let check = this.billObj.products.map(e => e.productId).some(e => e == productObj.productId);
-      let newObj = null
+      // let newObj = null
       console.log(check);
       if (!check) {
         let newObj = {
           productId: productObj.productId,
           productName: productObj.productName,
+          cgstPercentage: productObj.cgstPercentage,
+          sgstPercentage: productObj.sgstPercentage,
+          igstPercentage: productObj.igstPercentage,
+          igst: null,
+          cgst: null,
+          sgst: null,
           sellingPrice: null,
-          quantitySold: null,
+          quantityPurchased: null,
           totalSellingPrice: null,
         }
         this.billObj.products.push(newObj);
@@ -115,7 +126,7 @@ export class BillComponent implements OnInit {
       let customerUserName = this.customerFormControl.value.split('(')[1].split(')')[0];
       console.log(customerUserName);
       let userObj = this.customerList.filter(e => e.customerUserName == customerUserName);
-      this.billObj.userId = userObj[0].customerId;
+      this.billObj.dealerId = userObj[0].customerId;
       this.userBalance = userObj[0].customerBalance;
       this.showBalance = true;
       console.log(this.billObj);
@@ -141,23 +152,37 @@ export class BillComponent implements OnInit {
   calculateTotalPrice(item) {
     try {
       console.log(item);
-      if (item.sellingPrice !== null && item.quantitySold !== null && item.sellingPrice.length > 0 && item.quantitySold > 0) {
+      if (item.sellingPrice !== null && item.quantitySold !== null) {
         // console.log(typeof (+item.sellingPrice));
-        item.totalSellingPrice = (+item.sellingPrice) * (+item.quantitySold);
+        item.totalSellingPrice = item.sellingPrice * item.quantitySold;
+        item.cgst = item.sellingPrice * item.quantitySold * item.cgstPercentage / 100;
+        item.sgst = item.sellingPrice * item.quantitySold * item.sgstPercentage / 100;
+        item.igst = item.sellingPrice * item.quantitySold * item.igstPercentage / 100
         // this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
         this.calculateBilltotal();
-        console.log(item.totalSellingPrice);
+        console.log(item);
       }
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
   }
 
+  // netGST: number = 0;
+  totalIgst: number = 0;
+  totalCgst: number = 0;
+  totalSgst: number = 0;
+
   calculateBilltotal() {
     try {
       this.billTotal = 0;
+      this.totalCgst = 0;
+      this.totalIgst = 0;
+      this.totalSgst = 0;
       this.billObj.products.forEach(element => {
         this.billTotal += element.totalSellingPrice;
+        this.totalCgst += element.cgst;
+        this.totalSgst += element.sgst;
+        this.totalIgst += element.igst;
       });
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -172,6 +197,9 @@ export class BillComponent implements OnInit {
       this.showBalance = false;
       this.billTotal = 0;
       this.userBalance = 0;
+      this.totalIgst = 0;
+      this.totalSgst = 0;
+      this.totalCgst = 0;
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
@@ -179,7 +207,15 @@ export class BillComponent implements OnInit {
 
   Pay() {
     try {
+      this.billObj.totalAmount = this.billTotal;
+      this.billObj.netGST = this.totalCgst + this.totalIgst + this.totalSgst;
       console.log(this.billObj);
+      this.promiseService.post('bill', 'api', this.billObj).then(res => {
+        this.snackbarService.openSnackBar("Purchase Successfull", 'Close', 'success-snackbar');
+      }, err => {
+        this.snackbarService.openSnackBar(err.message, 'Close', 'error-snackbar');
+      });
+
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
     }
@@ -278,7 +314,7 @@ export class BillComponent implements OnInit {
         const contentDataURL = canvas.toDataURL('image/png')
         let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
         var position = 0;
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+        pdf.addImage(contentDataURL, 'PNG', 0, 20, imgWidth, imgHeight)
         pdf.save('MYPdf.pdf'); // Generated PDF
       });
     } catch (e) {
