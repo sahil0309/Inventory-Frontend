@@ -123,11 +123,11 @@ export class BillComponent implements OnInit {
   onSelection() {
     try {
       // console.log(this.customerFormControl.value);
-      let customerUserName = this.customerFormControl.value.split('(')[1].split(')')[0];
-      console.log(customerUserName);
-      let userObj = this.customerList.filter(e => e.customerUserName == customerUserName);
-      this.billObj.dealerId = userObj[0].customerId;
-      this.userBalance = userObj[0].customerBalance;
+      let dealerUserName = this.customerFormControl.value.split('(')[1].split(')')[0];
+      let dealerObj = this.dealerList.filter(e => e.dealerUserName == dealerUserName);
+      console.log(dealerObj);
+      this.billObj.dealerId = dealerObj[0].dealerId;
+      this.userBalance = 0;
       this.showBalance = true;
       console.log(this.billObj);
     } catch (e) {
@@ -152,12 +152,12 @@ export class BillComponent implements OnInit {
   calculateTotalPrice(item) {
     try {
       console.log(item);
-      if (item.sellingPrice !== null && item.quantitySold !== null) {
+      if (item.sellingPrice !== null && item.quantityPurchased !== null) {
         // console.log(typeof (+item.sellingPrice));
-        item.totalSellingPrice = item.sellingPrice * item.quantitySold;
-        item.cgst = item.sellingPrice * item.quantitySold * item.cgstPercentage / 100;
-        item.sgst = item.sellingPrice * item.quantitySold * item.sgstPercentage / 100;
-        item.igst = item.sellingPrice * item.quantitySold * item.igstPercentage / 100
+        item.totalSellingPrice = item.sellingPrice * item.quantityPurchased;
+        item.cgst = item.sellingPrice * item.quantityPurchased * item.cgstPercentage / 100;
+        item.sgst = item.sellingPrice * item.quantityPurchased * item.sgstPercentage / 100;
+        item.igst = item.sellingPrice * item.quantityPurchased * item.igstPercentage / 100
         // this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
         this.calculateBilltotal();
         console.log(item);
@@ -260,12 +260,12 @@ export class BillComponent implements OnInit {
   }
 
 
-  customerList: any = [];
+  dealerList: any = [];
   getCustomerList() {
     try {
-      this.promiseService.get('customer', 'api').then((res: any) => {
-        this.customerList = res;
-        console.log("customerList", this.customerList);
+      this.promiseService.get('dealer', 'api').then((res: any) => {
+        this.dealerList = res;
+        console.log("dealer list", this.dealerList);
         // this._filterCategory('');  
         this.filteredCustomerOptions = this.customerFormControl.valueChanges
           .pipe(
@@ -284,18 +284,18 @@ export class BillComponent implements OnInit {
   private _filterCustomer(value: string): string[] {
 
     // console.log('value', filterValue);
-    if (this.customerList && value) {
+    if (this.dealerList && value) {
       const filterValue = value.toLowerCase();
       if (value.length > 0)
-        return this.customerList.map(e => e.customerName.concat('(', e.customerUserName, ')')).filter(option => option.toLowerCase().includes(filterValue));
+      return this.dealerList.map(e => e.dealerAgencyName.concat('(', e.dealerUserName, ')')).filter(option => option.toLowerCase().includes(filterValue));
       else {
         // console.log("else");
-        return this.customerList.map(e => e.customerName.concat('(', e.customerUserName, ')'));
+        return this.dealerList.map(e => e.dealerAgencyName.concat('(', e.dealerUserName, ')'));
       }
     }
     else {
       // console.log("else");
-      return this.customerList.map(e => e.customerName.concat('(', e.customerUserName, ')'));
+      return this.dealerList.map(e => e.dealerAgencyName.concat('(', e.dealerUserName, ')'));
     }
     // console.log("category list", this.category_list);
   }
