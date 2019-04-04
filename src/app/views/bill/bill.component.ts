@@ -47,6 +47,7 @@ export class BillComponent implements OnInit {
   customerFormControl = new FormControl();
   filteredProductOptions: Observable<string[]>
   filteredCustomerOptions: Observable<string[]>
+  todaysDate = new Date();
   modeOfPayments: string[] = ["Cheque", "Cash", "Card"];
   ngOnInit() {
     this.getStockList();
@@ -120,11 +121,13 @@ export class BillComponent implements OnInit {
 
   userBalance: any;
   showBalance: boolean = false;
+  dealerObj: any = [];
   onSelection() {
     try {
       // console.log(this.customerFormControl.value);
       let dealerUserName = this.customerFormControl.value.split('(')[1].split(')')[0];
       let dealerObj = this.dealerList.filter(e => e.dealerUserName == dealerUserName);
+      this.dealerObj = this.dealerList.filter(e => e.dealerUserName == dealerUserName);
       console.log(dealerObj);
       this.billObj.dealerId = dealerObj[0].dealerId;
       this.userBalance = 0;

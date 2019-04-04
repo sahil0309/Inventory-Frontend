@@ -109,19 +109,19 @@
             <div class="row">
               <div class="col-3 col-sm-3">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Selling Price" name="Selling Price" [(ngModel)]="item.sellingPrice"
-                    type="number" (focusout)="calculateTotalPrice(item)" required>
+                  <input matInput placeholder="Selling Price" [(ngModel)]="item.sellingPrice" type="number"
+                    (focusout)="calculateTotalPrice(item)" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
               </div>
               <div class="col-3 col-sm-3">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Enter Quantity" name="Quantity" [(ngModel)]="item.quantityPurchased"
-                    type="number" (focusout)="calculateTotalPrice(item)" required>
+                  <input matInput placeholder="Enter Quantity" [(ngModel)]="item.quantityPurchased" type="number"
+                    (focusout)="calculateTotalPrice(item)" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
               </div>
               <div class="col-3 col-sm-3">
                 <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Total" name="totalAmount" disabled [(ngModel)]="item.totalSellingPrice" required>
+                  <input matInput placeholder="Total" disabled [(ngModel)]="item.totalSellingPrice" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
               </div>
               <div class="col-3 col-sm-3">
@@ -135,8 +135,8 @@
               <div class="col-8 col-sm-6 mb-sm-0">
                 <button type="button" mat-raised-button (click)="Reset()"
                   class="btn btn-block col-2 col-sm-2 mr-2">Back</button>
-                <button type="submit" [disabled]="!f.form.valid" mat-raised-button
-                  class="btn btn-block col-2 col-sm-2" color="primary">Pay</button>
+                <button type="submit" [disabled]="!f.form.valid" mat-raised-button class="btn btn-block col-2 col-sm-2"
+                  color="primary">Pay</button>
               </div>
               <div class="col-12 col-sm-6 text-right mt-2 mt-sm-0" *ngIf="billTotal > 0">
                 <div class="total-cost-area">
@@ -170,7 +170,7 @@
         <div class="col-xs-6">
           <address>
             <strong>Billed To:</strong><br>
-            John Smith<br>
+            {{dealerObj[0]?.dealerContactPerson}}<br>
             1234 Main<br>
             Apt. 4B<br>
             Springfield, ST 54321
@@ -190,14 +190,13 @@
         <div class="col-xs-6">
           <address>
             <strong>Payment Method:</strong><br>
-            Visa ending **** 4242<br>
-            jsmith@email.com
+            {{billObj?.modeOfPayment}}
           </address>
         </div>
         <div class="col-xs-6 text-right">
           <address>
             <strong>Order Date:</strong><br>
-            March 7, 2014<br><br>
+            {{todaysDate|date:'dd-MM-yyyy'}}<br><br>
           </address>
         </div>
       </div>
@@ -223,41 +222,35 @@
               </thead>
               <tbody>
                 <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                <tr>
-                  <td>BS-200</td>
-                  <td class="text-center">$10.99</td>
-                  <td class="text-center">1</td>
-                  <td class="text-right">$10.99</td>
-                </tr>
-                <tr>
-                  <td>BS-400</td>
-                  <td class="text-center">$20.00</td>
-                  <td class="text-center">3</td>
-                  <td class="text-right">$60.00</td>
-                </tr>
-                <tr>
-                  <td>BS-1000</td>
-                  <td class="text-center">$600.00</td>
-                  <td class="text-center">1</td>
-                  <td class="text-right">$600.00</td>
+                <tr *ngFor="let obj of billObj?.products">
+                  <td>{{obj?.productName}}</td>
+                  <td class="text-center">{{obj?.sellingPrice}}</td>
+                  <td class="text-center">{{obj?.quantityPurchased}}</td>
+                  <td class="text-right">{{obj?.totalSellingPrice}}</td>
                 </tr>
                 <tr>
                   <td class="thick-line"></td>
                   <td class="thick-line"></td>
                   <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                  <td class="thick-line text-right">$670.99</td>
+                  <td class="thick-line text-right">{{billTotal}}</td>
                 </tr>
                 <tr>
                   <td class="no-line"></td>
                   <td class="no-line"></td>
-                  <td class="no-line text-center"><strong>Shipping</strong></td>
-                  <td class="no-line text-right">$15</td>
+                  <td class="no-line text-center"><strong>CGST</strong></td>
+                  <td class="no-line text-right">{{totalCgst}}</td>
+                </tr>
+                <tr>
+                  <td class="no-line"></td>
+                  <td class="no-line"></td>
+                  <td class="no-line text-center"><strong>SGST</strong></td>
+                  <td class="no-line text-right">{{totalSgst}}</td>
                 </tr>
                 <tr>
                   <td class="no-line"></td>
                   <td class="no-line"></td>
                   <td class="no-line text-center"><strong>Total</strong></td>
-                  <td class="no-line text-right">$685.99</td>
+                  <td class="no-line text-right">{{billTotal+totalCgst+totalSgst}}</td>
                 </tr>
               </tbody>
             </table>
