@@ -58,7 +58,6 @@ export class PurchaseReportComponent implements OnInit {
   stock_list: any;
   getStockList() {
     try {
-
       this.promiseService.get('stockReport', 'api').then((res: any) => {
         this.stock_list = res;
         console.log(this.stock_list);

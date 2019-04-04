@@ -141,7 +141,7 @@ export class BillComponent implements OnInit {
   onProductSelection() {
     try {
       let productObj = this.stockList.filter(e => e.productName == this.productFormControl.value)[0];
-      this.quantityInStock = productObj.quantityAvailable;
+      this.quantityInStock = productObj.quantity;
       this.showQuantity = true;
       console.log(productObj);
     } catch (e) {
@@ -153,14 +153,19 @@ export class BillComponent implements OnInit {
     try {
       console.log(item);
       if (item.sellingPrice !== null && item.quantityPurchased !== null) {
-        // console.log(typeof (+item.sellingPrice));
-        item.totalSellingPrice = item.sellingPrice * item.quantityPurchased;
-        item.cgst = item.sellingPrice * item.quantityPurchased * item.cgstPercentage / 100;
-        item.sgst = item.sellingPrice * item.quantityPurchased * item.sgstPercentage / 100;
-        item.igst = item.sellingPrice * item.quantityPurchased * item.igstPercentage / 100
-        // this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
-        this.calculateBilltotal();
-        console.log(item);
+
+        if (item.quantityPurchased > this.quantityInStock)
+          this.snackbarService.openSnackBar("enter quantity less than in stock", 'Close', 'error-snackbar');
+
+        else {
+          item.totalSellingPrice = item.sellingPrice * item.quantityPurchased;
+          item.cgst = item.sellingPrice * item.quantityPurchased * item.cgstPercentage / 100;
+          item.sgst = item.sellingPrice * item.quantityPurchased * item.sgstPercentage / 100;
+          item.igst = 0;
+          // this.billTotal += item.totalSellingPrice;//create a function to calculate bill total
+          this.calculateBilltotal();
+          console.log(item);
+        }
       }
     } catch (e) {
       this.snackbarService.openSnackBar(e.message, 'Close', 'error-snackbar');
@@ -212,6 +217,7 @@ export class BillComponent implements OnInit {
       console.log(this.billObj);
       this.promiseService.post('bill', 'api', this.billObj).then(res => {
         this.snackbarService.openSnackBar("Purchase Successfull", 'Close', 'success-snackbar');
+        this.Reset();
       }, err => {
         this.snackbarService.openSnackBar(err.message, 'Close', 'error-snackbar');
       });
@@ -224,7 +230,7 @@ export class BillComponent implements OnInit {
   stockList: any
   getStockList() {
     try {
-      this.promiseService.get('product', 'api').then((res: any) => {
+      this.promiseService.get('stockReport', 'api').then((res: any) => {
         this.stockList = res;
         console.log("stockList", this.stockList);
         // this._filterCategory('');  
@@ -287,7 +293,7 @@ export class BillComponent implements OnInit {
     if (this.dealerList && value) {
       const filterValue = value.toLowerCase();
       if (value.length > 0)
-      return this.dealerList.map(e => e.dealerAgencyName.concat('(', e.dealerUserName, ')')).filter(option => option.toLowerCase().includes(filterValue));
+        return this.dealerList.map(e => e.dealerAgencyName.concat('(', e.dealerUserName, ')')).filter(option => option.toLowerCase().includes(filterValue));
       else {
         // console.log("else");
         return this.dealerList.map(e => e.dealerAgencyName.concat('(', e.dealerUserName, ')'));
